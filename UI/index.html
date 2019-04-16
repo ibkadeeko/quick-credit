@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quick Credit</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <header>
+      <div class="container main-nav">
+          <div class="logo">
+              <a href="#">quick credit</a>
+          </div>
+          <nav class="menu">
+            <a class="current" href="#">home</a>
+            <a href="#">how it works</a>
+            <a href="#">about us</a>
+            <a class="login_btn btn-green" href="#">sign in</a>
+          </nav>
+          <div class="menu-toggle">
+              <a class="toggle-nav" href="#">&#9776;</a>
+          </div>
+      </div>
+  </header>
+
+  <section id="hero">
+    <div class="container">
+      <h2>Need a Loan?</h2>
+      <h2>You are not Alone.</h2>
+      <p>Smarter, Simple loans right when you need it.</p>
+      <p class="hero-btn">
+        <a class="btn btn-green" href="#">Apply now &#10230;</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="how-it-works">
+    <div class="container">
+      <p class="how-it-works__title"><span class="bold">How does</span> it Work</p>
+      <div class="box-display">
+        <div class="box">
+          <div class="img-wrap">
+            <img src="./img/login.png" alt="form">
+          </div>
+          <div class="box-content">
+            <p class="box-content__title">Apply for a Loan</p>
+            <p>All it takes is a few minutes. Just fill out an easy form and you are good to go.</p>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-wrap">
+            <img src="./img/satisfied.png" alt="form">
+          </div>
+          <div class="box-content">
+            <p class="box-content__title">Get an Instant Decision</p>
+            <p>We will go through your application to ensure you meet the requirements</p>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-wrap">
+            <img src="./img/cash.png" alt="form">
+          </div>
+          <div class="box-content">
+            <p class="box-content__title">Get Funding Fast</p>
+            <p>After approval your loan amount is sent to your account</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="right-for-you">
+      <div class="rfy-display">
+        <div class="rfy-img">
+          <img src="./img/adult-attractive-beautiful-1857518.png" alt="">
+        </div>
+        <div class="rfy-content">
+            <p class="rfy__title">Is a <span class="bold">Quick Credit</span> Loan right for you?</p>
+            <p>We offer Personal loans to fill your short-term funding gaps. Our loans are for short term use only and our repayment plan covers a period of 1 to 12 monthly installments.</p>
+            <p><span class="tick">&#10003;</span> You must be 18 years of old</p>
+            <p><span class="tick">&#10003;</span> You must legally live and work in Nigeria</p>
+            <p><span class="tick">&#10003;</span> You must be employed with the same employer for a minimum of 90 days</p>
+            <p><span class="tick">&#10003;</span> You must have a bank account that is not currently overdrawn</p>
+            <p><span class="tick">&#10003;</span> You must have a valid email address and working telephone number</p>
+        </div>
+      </div>
+  </section>
+
+  <section id="quick_estimate">
+    <div class="container">
+      <div class="estimate-form">
+        <p class="estimate__title">Get a Quick Estimate</p>
+        <p>How much would you like to loan?</p>
+        <input type="range" name="loan-amount" id="loan-amount" min="10000" max="200000" step="10000" value="100000">
+        <small>&#8358;10000<span>&#8358;200000</span></small>
+        <div class="amount-display">&#8358;100000</div>
+        <p>What term would you like?</p>
+        <input type="range" name="loan-term" id="loan-term" min="1" max="18" step="1" value="12">
+        <small>1 month<span>18 months</span></small>
+        <div class="term-display">12 months</div>
+        <div class="estimate-display">
+          <p>Estimated Monthly Repayment</p>
+          <p class="estimate__title"><span id="monthly_payment">&#8358;8791.59</span></p>
+          <p class="small">Borrowing <span class="amount-display bold">&#8358;100000</span> for <span class="term-display bold">12 months</span> results in a cumulative interest of <span class="bold total-interest">&#8358;5499.06</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+      <p>Ibukun Adeeko &copy; 2019</p>
+  </footer>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
