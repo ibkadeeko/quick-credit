@@ -27,6 +27,10 @@ body {
 	font-family: 'Lato', Arial, Helvetica, sans-serif;
 }
 
+div#main-body {
+  margin-top: 7rem;
+}
+
 .container {
 	margin: 0 auto;
 	width: 80%;
@@ -63,7 +67,7 @@ header > .main-nav {
 	justify-content: flex-end;
 	align-items: center;
 	flex-wrap: wrap;
-	z-index: 1;
+	z-index: 2;
 }
 
 header > .main-nav > .logo {
@@ -261,7 +265,6 @@ img {
 	url(../img/estimate-bg.jpg) no-repeat;
 	background-size: cover;
 	background-position: center;
-	/* height: 50rem; */
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -297,7 +300,7 @@ img {
 	color: #7b7f83;
 	display: flex;
 	font-size: var(--s-size);
-	margin-bottom: var(--m-size);
+  margin-bottom: var(--m-2x-size);
 }
 
 .estimate-form small>span {
@@ -306,12 +309,9 @@ img {
 
 div.amount-display,
 div.term-display {
-	background: #455464;
-	border-radius: 0.5rem;
 	font-size: var(--m-x-size);
 	height: 5rem;
 	line-height: 5rem;
-	margin-bottom: var(--m-size);
 	text-align: center;
 }
 
@@ -433,6 +433,82 @@ footer>p{
 	margin: 0;
 }
 /* ====================================== */
+
+/******** FORMS ***********/
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 36rem;
+  padding: var(--m-2x-size) 0 0;
+  margin: auto;
+}
+
+.form {
+  background: #FFFFFF;
+  max-height: 52rem;
+  overflow: hidden;
+  width: 100%;
+  padding: 4rem;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 var(--m-size);
+  padding: var(--m-size);
+  box-sizing: border-box;
+  font-size: 1.4rem;
+}
+
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: var(--primary-green);
+  width: 100%;
+  border: 0;
+  padding: var(--m-size);
+  color: #FFFFFF;
+  font-size: 1.4rem;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.form button:hover,.form button:active,.form button:focus {
+  background: #32cca0;
+}
+
+.form .message {
+  margin: var(--m-size) 0 0;
+  color: #b3b3b3;
+  font-size: var(--s-size);
+}
+
+.form .message a {
+  color: var(--primary-green);
+}
+
+form {
+  max-height: 52rem;
+  opacity: 1;
+  overflow: hidden;
+  transition: all 600ms 300ms ease-in-out;
+}
+
+form.closed {
+  opacity: 0;
+  max-height: 0px;
+}
+/* ======================== */
 
 	/* 
 .outline-btn-green {
