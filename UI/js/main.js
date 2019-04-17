@@ -6,6 +6,8 @@ const amountDisplay = document.querySelectorAll('.amount-display');
 const termDisplay = document.querySelectorAll('.term-display');
 const interestDisplay = document.querySelector('.total-interest');
 const monthlyPaymentDisplay = document.getElementById('monthly_payment');
+const formToggle = document.querySelectorAll('.message a');
+const forms = document.querySelectorAll('form');
 const naira = '\u20A6';
 
 function loanPayment(amount, months) {
@@ -44,5 +46,18 @@ if (loanAmount && loanTerm && amountDisplay && termDisplay) {
       elem.innerText = `${num} ${month}`;
     });
     loanPayment(parseInt(loanAmount.value, 10), parseInt(loanTerm.value, 10));
+  });
+}
+
+// Login / Register toggle
+function switchForm() {
+  forms.forEach((form) => {
+    form.classList.toggle('closed');
+  });
+}
+
+if (formToggle) {
+  formToggle.forEach((toggle) => {
+    toggle.addEventListener('click', switchForm);
   });
 }
