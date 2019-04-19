@@ -19,16 +19,23 @@ a {
 
 /* ======================== */
 
-html {
-	font-size: 62.5%;
-}
-
-body {
-	font-family: 'Lato', Arial, Helvetica, sans-serif;
+html, body {
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-size: 62.5%;
+  height: 100%;
+  margin: 0;
 }
 
 div#main-body {
-  margin-top: 7rem;
+  padding-top: 7rem;
+  min-height: 100%;
+  margin-bottom: -5rem;
+}
+
+div#main-body::after {
+  content: "";
+  display: block;
+  height: 5rem;
 }
 
 .container {
@@ -46,7 +53,9 @@ div#main-body {
 	--m-3x-size: 4.8rem;
 
 	--primary-black: #262e37;
-	--primary-green: #00c089;
+  --primary-green: #00c089;
+  
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* ================== */
@@ -425,6 +434,7 @@ footer{
   font: normal var(--m-size) sans-serif;
   height: 5rem;
   line-height: 5rem;
+  z-index: 2;
 }
 
 footer>p{
@@ -448,7 +458,7 @@ footer>p{
 
 .form {
   background: #FFFFFF;
-  max-height: 52rem;
+  max-height: 48rem;
   overflow: hidden;
   width: 100%;
   padding: 4rem;
@@ -457,15 +467,31 @@ footer>p{
 }
 
 .form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
   background: #f2f2f2;
-  width: 100%;
   border: 0;
+  box-sizing: border-box;
+  color: var(--primary-black);
+  font-family: "Roboto", sans-serif;
+  font-size: 1.4rem;
+  outline: 0;
   margin: 0 0 var(--m-size);
   padding: var(--m-size);
+  width: 100%;
+}
+
+.form textarea {
+  background: #f2f2f2;
+  border: 0;
   box-sizing: border-box;
+  color: var(--primary-black);
+  font-family: "Roboto", sans-serif;
   font-size: 1.4rem;
+  line-height: var(--m-size);
+  outline: 0;
+  margin: 0 0 var(--m-size);
+  padding: var(--m-size);
+  width: 100%;
+  resize: none;
 }
 
 .form button {
@@ -498,10 +524,17 @@ footer>p{
 }
 
 form {
-  max-height: 52rem;
+  max-height: 48rem;
   opacity: 1;
   overflow: hidden;
   transition: all 600ms 300ms ease-in-out;
+}
+
+form h2 {
+  color: var(--primary-black);
+  font-size: var(--m-x-size);
+  font-weight: normal;
+  margin-bottom: var(--m-size);
 }
 
 form.closed {
@@ -527,6 +560,130 @@ form.closed {
 	font-weight: normal;
 } */
 
+/******* USER DASHBOARD *******/
+.user-preview {
+  color: var(--primary-black);
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: var(--m-2x-size) auto;
+}
+
+.user-preview > div {
+  margin: var(--m-2x-size) auto;
+  height: 30rem;
+  width: 100%;
+  max-width: 36rem;
+  overflow: auto;
+}
+
+.loan-history {
+  margin: var(--m-2x-size) auto;
+  width: 100%;
+}
+
+.card-title {
+  background: var(--primary-black);
+  color: #fff;
+  font-size: var(--m-size);
+  line-height: var(--m-size);
+  padding: var(--s-size);
+  text-transform: uppercase;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.my-loans .card-body p {
+  font-size: var(--m-size);
+}
+
+.my-loans .card-body p.repayment__value {
+  font-size: var(--m-2x-size);
+}
+
+.my-loans .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.my-loans .card-body div:nth-child(2) {
+  height: 17.5rem;
+  align-self: center;
+  flex-direction: column;
+  justify-items: center;
+  padding-top: var(--m-2x-size);
+}
+
+.my-loans .card-body > div {
+  display: flex;
+  flex-direction: row;
+}
+
+.my-loans .card-body > div p {
+  flex: 1;
+}
+
+.overview__title {
+  color: #7b7f83;
+  font-size: var(--m-size);
+  margin-left: var(--m-2x-size);
+  text-transform: capitalize;
+}
+
+.overview__value {
+  font-size: var(--m-3x-size);
+  text-align: center;
+  margin-bottom: var(--m-2x-size);
+}
+
+.text-offset {
+  color: #7c7c80;
+  display: block;
+  font-size: 1rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+/* ========================== */
+
+/******* TABLES ********/
+.table-scroll {
+    /* position: relative; */
+    width:100%;
+    margin: auto;
+    overflow: auto;
+    font-size: var(--m-size);
+  }
+
+  .table-scroll table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: auto;
+    min-width: 100rem;
+  }
+
+.table-scroll th,
+.table-scroll td {
+  padding: 0.8rem 1.2rem;
+  border: 0.1rem solid #000;
+  background: #fff;
+  vertical-align: top;
+}
+
+.table-scroll thead th {
+  background: var(--primary-black);
+  color: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  text-transform: uppercase;
+}
+
+.table-scroll table td a {
+  color: #52b489;
+  text-decoration: underline;
+}
+/* =========================== */
 /***************** MEDIA QUERIES **********************/
 
 @media only screen and (min-width: 770px) {
@@ -588,6 +745,14 @@ form.closed {
 
 	.rfy-content .rfy__title {
 		text-align: left;
-	}
+  }
+  
+  .user-preview {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .user-preview > div {
+    width: 90%;
+  }
 }
 /* ======================================= */
