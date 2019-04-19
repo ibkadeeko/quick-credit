@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Quick Credit</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
@@ -14,7 +15,7 @@
           <a href="#">quick credit</a>
         </div>
         <nav class="menu">
-          <a href="../index.html">home</a>
+          <a href="../index.html">&#10229; back</a>
         </nav>
         <div class="menu-toggle">
           <a class="toggle-nav" href="#">&#9776;</a>
@@ -26,18 +27,18 @@
       <div class="container">
         <div class="login-page">
           <div class="form">
-            <form class="register-form closed">
-              <input type="text" placeholder="First name" required>
-              <input type="text" placeholder="Last name" required/>
-              <input type="password" placeholder="Password" required/>
-              <input type="text" placeholder="Email address" required/>
-              <input type="text" placeholder="Phone number" required/>
+            <form id="register-form" class="closed">
+              <input name="firstName" type="text" placeholder="First name" pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$" required>
+              <input name="lastName" type="text" placeholder="Last name" pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$" required/>
+              <input name="password" type="password" placeholder="Password" minlength="6" required/>
+              <input name="email" type="email" placeholder="Email address" required/>
+              <input name="phoneNumber" type="text" pattern="[0-9]{11}" placeholder="Phone number" required/>
               <button>register</button>
               <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
-            <form class="login-form">
-              <input type="text" placeholder="Email" autofocus required/>
-              <input type="password" placeholder="Password" required/>
+            <form id="login-form">
+              <input name="email" type="email" placeholder="Email" autofocus required/>
+              <input name="password" type="password" placeholder="Password" required/>
               <button>login</button>
               <p class="message">Not registered? <a href="#">Create an account</a></p>
             </form>
@@ -45,8 +46,13 @@
         </div>
       </div>
     </div>
+
+    <footer>
+      <p>Ibukun Adeeko &copy; 2019</p>
+    </footer>
     
     
     <script src="../js/main.js"></script>
+    <script src="../js/login.js"></script>
   </body>
 </html>
