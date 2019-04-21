@@ -18,5 +18,11 @@ registerForm.addEventListener('submit', (evt) => {
 });
 loginForm.addEventListener('submit', (evt) => {
   const values = getValues(evt, loginForm);
+  const { password } = values;
+  if (password === 'admin') {
+    window.location.href = './admin.html';
+  } else {
+    window.location.href = './dashboard.html';
+  }
   console.log(values);
 });

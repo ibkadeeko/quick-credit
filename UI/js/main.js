@@ -8,6 +8,7 @@ const interestDisplay = document.querySelector('.total-interest');
 const monthlyPaymentDisplay = document.getElementById('monthly_payment');
 const formToggle = document.querySelectorAll('.message a');
 const forms = document.querySelectorAll('form');
+const back = document.querySelector('#back');
 const naira = '\u20A6';
 
 function loanPayment(amount, months) {
@@ -59,5 +60,11 @@ function switchForm() {
 if (formToggle) {
   formToggle.forEach((toggle) => {
     toggle.addEventListener('click', switchForm);
+  });
+}
+
+if (back) {
+  back.addEventListener('click', () => {
+    window.history.back();
   });
 }
