@@ -1,0 +1,52 @@
+{
+  "name": "quick-credit",
+  "version": "1.0.0",
+  "description": "Quick Credit is an online lending platform that provides short term soft loans to individuals.",
+  "main": "index.js",
+  "scripts": {
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "start:dev": "nodemon --exec babel-node ./server/app.js",
+    "start": "babel-node ./server/app.js",
+    "test": "cross-env NODE_ENV=test nyc mocha ./server/test --timeout 10000 exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibkadeeko/quick-credit.git"
+  },
+  "keywords": [],
+  "author": "Ibukunoluwa Adeeko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ibkadeeko/quick-credit/issues"
+  },
+  "homepage": "https://github.com/ibkadeeko/quick-credit#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/register": "^7.4.0",
+    "babel-plugin-istanbul": "^5.1.2",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "coveralls": "^3.0.3",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "mocha": "^6.1.4",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nodemon": "^1.18.11",
+    "nyc": "^14.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.10.0"
+  }
+}
