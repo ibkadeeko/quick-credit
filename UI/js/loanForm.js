@@ -15,6 +15,7 @@ formList.forEach((form, index) => {
       formList[next].classList.toggle('closed');
     } else {
       console.log(loanApplicationDetails);
+      window.location.href = './dashboard.html';
     }
   });
 });

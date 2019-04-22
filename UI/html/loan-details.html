@@ -86,9 +86,30 @@
             </form>
           </div>
         </div>
-        <div class="payment-btn">
-            <a class="login_btn btn-green no-border" href="#">MAKE PAYMENT</a>
-        </div>  
+        <section class="mg-top">
+          <input type="checkbox" id="click" />
+          <label class="payment-btn" for="click">
+            <a class="login_btn btn-green no-border">MAKE PAYMENT</a>
+          </label>
+
+          <div class="modal">
+            <div class="modal__content">
+
+              <div class="login-page">
+                <div class="form">
+                    <form id="login-form">
+                        <input name="loan-id" type="text" placeholder="loan-id" autofocus required/>
+                        <input name="amount" type="text" placeholder="amount" required/>
+                        <button>make payment</button>
+                        <p class="message">Cancel</p>
+                      </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="overlay"></div>
+        </section>
         <div class="loan-history">
             <p class="card__header">repayment history</p>
             <div class="table-responsive table--no-card no-shadow">

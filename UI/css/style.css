@@ -588,6 +588,7 @@ background-color: #f5f5f5;
   margin: 0;
   color: #b3b3b3;
   font-size: var(--s-size);
+  cursor: pointer;
 }
 
 .form .message a {
@@ -736,65 +737,6 @@ form .form-group div>input {
 }
 /* ========================== */
 
-/* .table-responsive {
-  margin: auto;
-  overflow: auto;
-  font-size: var(--m-size);
-  width: 100%;
-
-}
-
-.table-responsive .table-data {
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 0;
-  overflow: auto;
-  width: 10rem;
-}
-
-.table-data thead th {
-  background: var(--primary-black);
-  font-size: var(--m-size);
-  color: #fff;
-  vertical-align: bottom;
-  font-weight: 400;
-  text-transform: capitalize;
-  line-height: 1;
-  padding: 1rem 3.2rem 2.4rem 3.2rem;
-  white-space: nowrap;
-}
-
-.table-data tbody td {
-  color: #808080;
-  padding: 1.2rem 3.2rem;
-  white-space: nowrap;
-}
-
-.table-data tbody tr:hover td {
-  color: #555;
-  cursor: pointer;
-}
-
-.table-data tbody td a {
-  color: #3a6be1;
-}
-
-.table-data tbody td a:hover {
-  text-decoration: underline;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #fff;
-}
-
-.table-striped tbody tr:nth-of-type(even) {
-  background-color: #f5f5f5;
-}
-
- */
-
-/* =========================== */
-
 .loan-decision {
   display: flex;
   margin: 2rem 0 4rem;
@@ -806,6 +748,66 @@ form .form-group div>input {
   margin: 2rem 0 4rem;
   font-size: 2.4rem;
 }
+
+/******* MODAL ********/
+section.mg-top {
+  margin-top: var(--m-x-size);
+}
+
+#click {
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+  background: #000000;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+}
+
+input[type="checkbox"]:checked ~ .overlay {
+  pointer-events: auto;
+  opacity: 0.9;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transition: transform 0.5s ease, opacity 0.5s ease;
+          transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  -webkit-transform: translate(-50%, -50%) scale(0.5);
+          transform: translate(-50%, -50%) scale(0.5);
+  width: 100%;
+  max-width: 64rem;
+  pointer-events: none;
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked ~ .modal {
+  pointer-events: auto;
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+          transform: translate(-50%, -50%) scale(1);
+  -webkit-transition: transform 0.5s ease, opacity 0.5s ease;
+          transition: transform 0.5s ease, opacity 0.5s ease;
+  transition-delay: 0.1s;
+}
+
+.modal__content {
+  display: block;
+}
+/* ------------------- */
 
 /************ FOOTER *******************/
 
