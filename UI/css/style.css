@@ -383,6 +383,12 @@ box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
 overflow: auto;
 }
 
+.table-responsive.table--no-card.no-shadow {
+-webkit-box-shadow: none;
+-moz-box-shadow: none;
+box-shadow: none;
+}
+
 .table-earning thead th {
 background: var(--primary-black);
 font-size: var(--m-size);
@@ -394,6 +400,11 @@ line-height: 1;
 /* padding: 2.2rem 4rem; */
 padding: 1rem 3.2rem 2.4rem 3.2rem;
 white-space: nowrap;
+}
+
+.table-earning.repayment-table thead th {
+padding: 2.2rem 3.2rem;
+vertical-align: middle;
 }
 
 .table-earning thead th.text-right {
@@ -789,6 +800,11 @@ form .form-group div>input {
   margin: 2rem 0 4rem;
   font-size: 2.4rem;
   justify-content: space-evenly;
+}
+
+.payment-btn {
+  margin: 2rem 0 4rem;
+  font-size: 2.4rem;
 }
 
 /************ FOOTER *******************/
