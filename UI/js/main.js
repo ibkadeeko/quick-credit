@@ -10,6 +10,8 @@ const formToggle = document.querySelectorAll('.message a');
 const forms = document.querySelectorAll('form');
 const back = document.querySelector('#back');
 const naira = '\u20A6';
+const click = document.getElementById('click');
+const login = document.querySelector('#login-form');
 
 function loanPayment(amount, months) {
   const i = (0.1 / 12); // interest rate is 10%
@@ -66,5 +68,32 @@ if (formToggle) {
 if (back) {
   back.addEventListener('click', () => {
     window.history.back();
+  });
+}
+
+function getValues(evt, form) {
+  evt.preventDefault();
+  const { elements } = form;
+  const values = {};
+  for (let i = 0; i < elements.length - 1; i += 1) {
+    const item = elements.item(i);
+    values[item.name] = item.value;
+  }
+  return values;
+}
+
+if (login) {
+  login.addEventListener('submit', (evt) => {
+    const values = getValues(evt, login);
+    console.log(values);
+    if (click) {
+      click.checked = false;
+    }
+  });
+}
+
+if (click) {
+  document.querySelector('.message').addEventListener('click', () => {
+    click.checked = false;
   });
 }
