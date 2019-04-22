@@ -1,0 +1,15 @@
+{
+  "require": [
+    "@babel/register",
+    "@babel/polyfill"
+    ],
+  "reporter": [
+      "html",
+      "text"
+    ],
+  "sourceMap": false,
+  "instrument": false
+}
+
+
+
