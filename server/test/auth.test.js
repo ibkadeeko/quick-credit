@@ -167,3 +167,81 @@ describe('POST auth/signup', () => {
       });
   });
 });
+
+describe('POST auth/login', () => {
+  it('SHOULD NOT login the user if user is not found', (done) => {
+    const loginDetails = {
+      email: 'aaronkramer@hotmail.com',
+      password: 'Ilove0cats#',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(loginDetails)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+  it('SHOULD NOT login the user if email is omitted', (done) => {
+    const loginDetails = {
+      password: 'Ilove0dogs#',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(loginDetails)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('SHOULD NOT login the user if password field is omitted', (done) => {
+    const loginDetails = {
+      email: 'tomblack@mandela.com',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(loginDetails)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('SHOULD NOT login the user if password is wrong', (done) => {
+    const loginDetails = {
+      email: 'tomblack@mandela.com',
+      password: 'Ilovdogs#',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(loginDetails)
+      .end((err, res) => {
+        res.should.have.status(401);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('SHOULD login the user if user is found', (done) => {
+    const loginDetails = {
+      email: 'tomblack@mandela.com',
+      password: 'Ilove0dogs#',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(loginDetails)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('status').eql(200);
+        res.body.should.be.a('object');
+        res.body.data.should.be.a('object');
+        res.body.data.should.have.property('token');
+        done(err);
+      });
+  });
+});
