@@ -1,9 +1,9 @@
-import usersDb from '../db/users';
+import usersDb from '../db/users.json';
 
 class UserModel {
   static find(email) {
     const exists = usersDb.find(user => user.email === email);
-    return !!exists;
+    return exists;
   }
 
   static findPhone(phone) {

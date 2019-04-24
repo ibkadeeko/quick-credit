@@ -6,14 +6,15 @@ import UserModel from '../models/userModel';
 
 dotenv.config();
 
+const keys = ['id', 'firstName', 'lastName', 'email', 'phone', 'status', 'registered'];
 class Users {
-  static async signup(req, res, next) {
+  static signup(req, res, next) {
     const {
       firstName, lastName, email, password, phone,
     } = req.body;
     if (UserModel.find(email)) return errorRes(next, 400, 'User with this email already exists');
     if (UserModel.findPhone(phone)) return errorRes(next, 400, 'User with this Phone Number already exists');
-    const hashedPassword = await bcrypt.hashSync(password, 8);
+    const hashedPassword = bcrypt.hashSync(password, 8);
     const newUser = {
       firstName,
       lastName,
@@ -31,11 +32,30 @@ class Users {
       email: userObject.email,
       isAdmin: userObject.isAdmin,
     };
-      // create a token
+    // create a token
     const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
-    // to hide password from response
-    delete userObject.password;
-    return successRes(res, 201, { token, user: userObject });
+    // hide password and admin status from response
+    const user = keys.reduce((result, key) => ({ ...result, [key]: userObject[key] }), {});
+    // delete userObject.password;
+    return successRes(res, 201, { token, user });
+  }
+
+  static login(req, res, next) {
+    const { email, password } = req.body;
+    const user = UserModel.find(email);
+    if (user) {
+      const passwordIsValid = bcrypt.compareSync(password, user.password);
+      if (!passwordIsValid) return errorRes(next, 401, 'email and password do not match');
+      const payload = {
+        userId: user.id,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      };
+      const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
+      const userObject = keys.reduce((result, key) => ({ ...result, [key]: user[key] }), {});
+      return successRes(res, 200, { token, user: userObject });
+    }
+    return errorRes(next, 400, 'User with this email was not found');
   }
 }
 

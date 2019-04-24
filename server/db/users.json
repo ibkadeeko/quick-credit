@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "firstName": "Mariquilla",
+    "lastName": "Greenhough",
+    "email": "mgreenhough0@noaa.gov",
+    "password": "ar0Qcw5gT",
+    "address": "71 Bonner Park",
+    "status": false,
+    "isAdmin": false,
+    "dateCreated": "05/14/2018"
+  },
+  {
+    "id": 2,
+    "firstName": "Bentlee",
+    "lastName": "Dedam",
+    "email": "bdedam1@bigcartel.com",
+    "password": "u2Rb1uwC",
+    "address": "0 Elgar Park",
+    "status": true,
+    "isAdmin": true,
+    "dateCreated": "11/19/2018"
+  },
+  {
+    "id": 3,
+    "firstName": "Lissy",
+    "lastName": "Krink",
+    "email": "lkrink2@rakuten.co.jp",
+    "password": "lgKVaTCFGHHe",
+    "address": "57 Monterey Alley",
+    "status": true,
+    "isAdmin": false,
+    "dateCreated": "06/01/2018"
+  },
+  {
+    "id": 4,
+    "firstName": "Veronique",
+    "lastName": "McGrory",
+    "email": "vmcgrory3@cdbaby.com",
+    "password": "Ky2PPhK",
+    "address": "1139 Fordem Street",
+    "status": false,
+    "isAdmin": true,
+    "dateCreated": "02/13/2019"
+  },
+  {
+    "id": 5,
+    "firstName": "Candis",
+    "lastName": "Lakeman",
+    "email": "clakeman4@amazonaws.com",
+    "password": "Uf8cpVqGqmER",
+    "address": "7 Rockefeller Road",
+    "status": false,
+    "isAdmin": true,
+    "dateCreated": "11/02/2018"
+  },
+  {
+    "id": 6,
+    "firstName": "Karalynn",
+    "lastName": "Arlott",
+    "email": "karlott5@scientificamerican.com",
+    "password": "e6EGcYY",
+    "address": "706 Westend Point",
+    "status": false,
+    "isAdmin": false,
+    "dateCreated": "04/30/2018"
+  },
+  {
+    "id": 7,
+    "firstName": "Britney",
+    "lastName": "Spillett",
+    "email": "bspillett6@japanpost.jp",
+    "password": "b4WHNczDd4l",
+    "address": "331 Anderson Hill",
+    "status": false,
+    "isAdmin": false,
+    "dateCreated": "12/31/2018"
+  },
+  {
+    "id": 8,
+    "firstName": "Hervey",
+    "lastName": "Jorioz",
+    "email": "hjorioz7@bravesites.com",
+    "password": "SdyaRDF99e",
+    "address": "472 Northwestern Terrace",
+    "status": true,
+    "isAdmin": true,
+    "dateCreated": "10/04/2018"
+  },
+  {
+    "id": 9,
+    "firstName": "Theresa",
+    "lastName": "Groucutt",
+    "email": "tgroucutt8@bbb.org",
+    "password": "XTvuFao",
+    "address": "35 Vermont Hill",
+    "status": false,
+    "isAdmin": true,
+    "dateCreated": "09/13/2018"
+  },
+  {
+    "id": 10,
+    "firstName": "Isa",
+    "lastName": "Scuse",
+    "email": "iscuse9@tamu.edu",
+    "password": "gnpL3v",
+    "address": "953 Shelley Point",
+    "status": false,
+    "isAdmin": false,
+    "dateCreated": "11/16/2018"
+  }
+]
