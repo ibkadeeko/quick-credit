@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-    "start:dev": "nodemon --exec babel-node ./server/app.js",
-    "start": "babel-node ./server/app.js",
-    "test": "cross-env NODE_ENV=test nyc mocha ./server/test --timeout 10000 exit"
+    "start:dev": "nodemon --exec babel-node ./server",
+    "start": "babel-node ./server",
+    "test": "cross-env NODE_ENV=test nyc mocha ./server/test/ --timeout=10000 --exit"
   },
   "repository": {
     "type": "git",
