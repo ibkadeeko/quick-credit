@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-    - "stable"
+    - "node"
 env:
     global: CC_TEST_REPORTER_ID=d8ebe727d9ba81eaa7c9ab655cc45d4a74fa45b4210cba44f066fdeb22b8a889
 before_script:
@@ -8,10 +8,9 @@ before_script:
     - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     - chmod +x ./cc-test-reporter
     - ./cc-test-reporter before-build
-script:
-  - nyc --reporter=lcov --reporter=text-lcov npm test
 cache:
     directories:
         - "node_modules"
 after_success:
     - npm run coverage
+    - npm run coveralls
