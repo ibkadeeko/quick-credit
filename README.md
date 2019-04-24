@@ -55,6 +55,11 @@ $ npm test
 
 You can see a hosted version of the template at [https://ibkadeeko.github.io/quick-credit/UI](https://ibkadeeko.github.io/quick-credit/UI)
 
+## API
+
+The API is currently in version 1 (v1) and is hosted at [https://ibk-quick-credit.herokuapp.com/](https://ibk-quick-credit.herokuapp.com/)
+
+
 ## Author
 
 Ibukunoluwa Adeeko
