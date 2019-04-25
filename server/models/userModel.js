@@ -1,4 +1,5 @@
 import usersDb from '../db/users.json';
+import { getDate } from '../utils/helperUtils';
 
 class UserModel {
   static find(email) {
@@ -15,6 +16,7 @@ class UserModel {
     const {
       firstName, lastName, email, password, phone, status, isAdmin,
     } = params;
+    const date = getDate();
     const newUser = {
       id: usersDb.length + 1,
       firstName,
@@ -24,7 +26,7 @@ class UserModel {
       phone,
       status,
       isAdmin,
-      registered: new Date(),
+      registered: date,
     };
     usersDb.push(newUser);
     return usersDb[usersDb.length - 1];
