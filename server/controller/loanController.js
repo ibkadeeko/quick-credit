@@ -60,7 +60,8 @@ class Loans {
     }
     const { status, repaid } = req.query;
     if (status && repaid === 'true') {
-      return successRes(res, 200, { message: 'return all REPAID loans' });
+      const repaidLoans = LoanModel.getRepaidLoans();
+      return successRes(res, 200, repaidLoans);
     }
     if (status && repaid === 'false') {
       const currentLoans = LoanModel.getUnpaidLoans();

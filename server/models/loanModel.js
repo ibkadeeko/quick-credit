@@ -39,6 +39,11 @@ class LoanModel {
     const currentLoans = loanDb.filter(loan => loan.status === 'approved' && loan.repaid === false);
     return currentLoans;
   }
+
+  static getRepaidLoans() {
+    const repaidLoans = loanDb.filter(loan => loan.status === 'approved' && loan.repaid === true);
+    return repaidLoans;
+  }
 }
 
 export default LoanModel;
