@@ -58,13 +58,12 @@ class Loans {
       const allLoans = LoanModel.getAllLoans();
       return successRes(res, 200, allLoans);
     }
-    const { status, repaid } = req.query;
-    if (status && repaid === 'true') {
-      return successRes(res, 200, { message: 'return all REPAID loans' });
-    }
-    if (status && repaid === 'false') {
-      const currentLoans = LoanModel.getUnpaidLoans();
-      return successRes(res, 200, currentLoans);
+    const { status } = req.query;
+    let { repaid } = req.query;
+    if (status && repaid) {
+      repaid = JSON.parse(repaid);
+      const approvedLoans = LoanModel.getApprovedLoans(repaid);
+      return successRes(res, 200, approvedLoans);
     }
     return errorRes(next, 400, 'Invalid Request');
   }
