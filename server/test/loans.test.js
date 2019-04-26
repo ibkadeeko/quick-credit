@@ -219,7 +219,7 @@ describe('GET /loans', () => {
         res.should.have.status(200);
         res.body.should.have.property('status').eql(200);
         res.body.should.be.a('object');
-        res.body.data.should.be.a('object');
+        res.body.data.should.be.a('array');
         done(err);
       });
   });

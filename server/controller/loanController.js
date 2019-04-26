@@ -63,7 +63,8 @@ class Loans {
       return successRes(res, 200, { message: 'return all REPAID loans' });
     }
     if (status && repaid === 'false') {
-      return successRes(res, 200, { message: 'return all UNrepaid loans' });
+      const currentLoans = LoanModel.getUnpaidLoans();
+      return successRes(res, 200, currentLoans);
     }
     return errorRes(next, 400, 'Invalid Request');
   }
