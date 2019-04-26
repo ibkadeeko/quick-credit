@@ -47,6 +47,22 @@ class Validate {
     }
     next();
   }
+
+  static getRequest(req, res, next) {
+    req.checkQuery('status')
+      .optional()
+      .equals('approved')
+      .withMessage('Invalid status query');
+    req.checkQuery('repaid')
+      .optional()
+      .isIn(['true', 'false'])
+      .withMessage('Invalid repaid query');
+    const errors = req.validationErrors();
+    if (errors) {
+      return errorRes(next, 400, errors[0].msg);
+    }
+    next();
+  }
 }
 
 export default Validate;
