@@ -30,6 +30,10 @@ class LoanModel {
     loanDb.push(newLoan);
     return loanDb[loanDb.length - 1];
   }
+
+  static getAllLoans() {
+    return loanDb;
+  }
 }
 
 export default LoanModel;

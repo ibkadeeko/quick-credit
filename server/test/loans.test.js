@@ -185,3 +185,62 @@ describe('POST /loans', () => {
       });
   });
 });
+
+describe('GET /loans', () => {
+  it('SHOULD return a list of all Loans', (done) => {
+    chai.request(app)
+      .get('/api/v1/loans')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('status').eql(200);
+        res.body.should.be.a('object');
+        res.body.data.should.be.a('array');
+        res.body.data[0].should.have.property('amount');
+        res.body.data[0].should.have.property('tenor');
+        res.body.data[0].should.have.property('interest');
+        done(err);
+      });
+  });
+  it('SHOULD return a list of all REPAID loans', (done) => {
+    chai.request(app)
+      .get('/api/v1/loans?status=approved&repaid=true')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('status').eql(200);
+        res.body.should.be.a('object');
+        res.body.data.should.be.a('object');
+        done(err);
+      });
+  });
+  it('SHOULD return a list of all UNREPAID loans', (done) => {
+    chai.request(app)
+      .get('/api/v1/loans?status=approved&repaid=false')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('status').eql(200);
+        res.body.should.be.a('object');
+        res.body.data.should.be.a('object');
+        done(err);
+      });
+  });
+  it('SHOULD NOT return a List of Loans', (done) => {
+    chai.request(app)
+      .get('/api/v1/loans?status=pending&repaid=false')
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+  it('SHOULD NOT return a List of Loans', (done) => {
+    chai.request(app)
+      .get('/api/v1/loans?home=something')
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+});

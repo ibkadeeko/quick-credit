@@ -52,6 +52,21 @@ class Loans {
     }
     return errorRes(next, 400, 'User with this email has an Ongoing Loan');
   }
+
+  static getAll(req, res, next) {
+    if (Object.keys(req.query).length === 0) {
+      const allLoans = LoanModel.getAllLoans();
+      return successRes(res, 200, allLoans);
+    }
+    const { status, repaid } = req.query;
+    if (status && repaid === 'true') {
+      return successRes(res, 200, { message: 'return all REPAID loans' });
+    }
+    if (status && repaid === 'false') {
+      return successRes(res, 200, { message: 'return all UNrepaid loans' });
+    }
+    return errorRes(next, 400, 'Invalid Request');
+  }
 }
 
 export default Loans;
