@@ -67,6 +67,13 @@ class Loans {
     }
     return errorRes(next, 400, 'Invalid Request');
   }
+
+  static getOne(req, res, next) {
+    const id = parseInt(req.params.id, 10);
+    const loan = LoanModel.findById(id);
+    if (loan) { return successRes(res, 200, loan); }
+    return errorRes(next, 404, 'Loan with this id was not found');
+  }
 }
 
 export default Loans;

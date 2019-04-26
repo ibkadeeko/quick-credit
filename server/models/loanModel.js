@@ -7,6 +7,11 @@ class LoanModel {
     return userLoans;
   }
 
+  static findById(id) {
+    const userLoans = loanDb.find(loan => loan.id === id);
+    return userLoans;
+  }
+
   static create(params) {
     const {
       firstName, lastName, email, amount, tenor, status,

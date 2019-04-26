@@ -6,5 +6,6 @@ const loanRoutes = Router();
 
 loanRoutes.post('/', Validate.loanApplication, Loans.create);
 loanRoutes.get('/', Validate.getRequest, Loans.getAll);
+loanRoutes.get('/:id', Validate.id, Loans.getOne);
 
 export default loanRoutes;
