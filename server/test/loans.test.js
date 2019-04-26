@@ -244,3 +244,44 @@ describe('GET /loans', () => {
       });
   });
 });
+
+describe('Get /loans/:id', () => {
+  it('It SHOULD NOT work if id is not a number', (done) => {
+    const id = '1xae4rg2';
+    chai.request(app)
+      .get(`/api/v1/loans/${id}`)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+  it('should NOT LIST a single Loan if ID is not in database', (done) => {
+    const id = 999;
+    chai.request(app)
+      .get(`/api/v1/loans/${id}`)
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(404);
+        done(err);
+      });
+  });
+  it('should LIST a SINGLE Loan', (done) => {
+    const id = 1;
+    chai.request(app)
+      .get(`/api/v1/loans/${id}`)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.data.should.be.a('object');
+        res.body.data.should.have.property('id');
+        res.body.data.id.should.equal(id);
+        res.body.data.should.have.property('amount');
+        res.body.data.should.have.property('tenor');
+        res.body.data.should.have.property('interest');
+        done(err);
+      });
+  });
+});

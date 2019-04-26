@@ -63,6 +63,18 @@ class Validate {
     }
     next();
   }
+
+  static id(req, res, next) {
+    req.checkParams('id')
+      .notEmpty()
+      .trim()
+      .isNumeric();
+    const errors = req.validationErrors();
+    if (errors) {
+      return errorRes(next, 400, errors[0].msg);
+    }
+    next();
+  }
 }
 
 export default Validate;
