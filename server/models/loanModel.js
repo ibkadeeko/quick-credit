@@ -35,14 +35,9 @@ class LoanModel {
     return loanDb;
   }
 
-  static getUnpaidLoans() {
-    const currentLoans = loanDb.filter(loan => loan.status === 'approved' && loan.repaid === false);
-    return currentLoans;
-  }
-
-  static getRepaidLoans() {
-    const repaidLoans = loanDb.filter(loan => loan.status === 'approved' && loan.repaid === true);
-    return repaidLoans;
+  static getApprovedLoans(repaid) {
+    const approvedLoans = loanDb.filter(loan => loan.status === 'approved' && loan.repaid === repaid);
+    return approvedLoans;
   }
 }
 
