@@ -1,12 +1,15 @@
 language: node_js
 node_js:
-    - "node"
+  - "node"
+notifications:
+  email: false
 env:
     global: CC_TEST_REPORTER_ID=d8ebe727d9ba81eaa7c9ab655cc45d4a74fa45b4210cba44f066fdeb22b8a889
 before_script:
-    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-    - chmod +x ./cc-test-reporter
-    - ./cc-test-reporter before-build
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 after_success:
-    - npm run coveralls
-    - ./cc-test-reporter after-build -t text-lcov --id $CC_TEST_REPORTER_ID --exit-code $TRAVIS_TEST_RESULT
+  - npm run coveralls
+after_script:
+  - ./cc-test-reporter after-build -t text-lcov --id $CC_TEST_REPORTER_ID --exit-code $TRAVIS_TEST_RESULT

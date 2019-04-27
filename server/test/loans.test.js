@@ -181,6 +181,9 @@ describe('POST /loans', () => {
         res.body.should.have.property('status').eql(201);
         res.body.should.be.a('object');
         res.body.data.should.be.a('object');
+        res.body.data.should.have.property('status').eql('pending');
+        res.body.data.should.have.property('amount').eql(100000);
+        res.body.data.should.have.property('tenor').eql(6);
         done(err);
       });
   });
@@ -209,6 +212,8 @@ describe('GET /loans', () => {
         res.body.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         res.body.data.should.be.a('array');
+        res.body.data[0].should.have.property('status').eql('approved');
+        res.body.data[0].should.have.property('repaid').eql(true);
         done(err);
       });
   });
@@ -220,6 +225,8 @@ describe('GET /loans', () => {
         res.body.should.have.property('status').eql(200);
         res.body.should.be.a('object');
         res.body.data.should.be.a('array');
+        res.body.data[0].should.have.property('status').eql('approved');
+        res.body.data[0].should.have.property('repaid').eql(false);
         done(err);
       });
   });
@@ -281,6 +288,86 @@ describe('Get /loans/:id', () => {
         res.body.data.should.have.property('amount');
         res.body.data.should.have.property('tenor');
         res.body.data.should.have.property('interest');
+        done(err);
+      });
+  });
+});
+
+describe('PATCH /loans/:id', () => {
+  it('It SHOULD NOT work if id is not a number', (done) => {
+    const id = '1xae4rg2';
+    chai.request(app)
+      .patch(`/api/v1/loans/${id}`)
+      .send({ status: 'approved' })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+  it('should NOT UPDATE if ID is not in the database', (done) => {
+    const id = 999;
+    chai.request(app)
+      .patch(`/api/v1/loans/${id}`)
+      .send({ status: 'approved' })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(404);
+        done(err);
+      });
+  });
+  it('should NOT update if status is not approved or rejected', (done) => {
+    const id = 1;
+    chai.request(app)
+      .patch(`/api/v1/loans/${id}`)
+      .send({ status: 'something' })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+  it('SHOULD UPDATE the Loan Application', (done) => {
+    const id = 1;
+    chai.request(app)
+      .patch(`/api/v1/loans/${id}`)
+      .send({ status: 'approved' })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.data.should.be.a('object');
+        res.body.data.should.have.property('id').eql(id);
+        res.body.data.should.have.property('status').eql('approved');
+        done(err);
+      });
+  });
+  it('SHOULD UPDATE the Loan Application', (done) => {
+    const id = 3;
+    chai.request(app)
+      .patch(`/api/v1/loans/${id}`)
+      .send({ status: 'rejected' })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.data.should.be.a('object');
+        res.body.data.should.have.property('id').eql(id);
+        res.body.data.should.have.property('status').eql('rejected');
+        done(err);
+      });
+  });
+  it('should NOT update if previous loan Application has been taken', (done) => {
+    const id = 3;
+    chai.request(app)
+      .patch(`/api/v1/loans/${id}`)
+      .send({ status: 'approved' })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
         done(err);
       });
   });
