@@ -11,5 +11,6 @@ loanRoutes.patch('/:id', Validate.loanApproval, Loans.LoanApproval);
 
 // Loan Repayments
 loanRoutes.post('/:id/repayment', Validate.repayment, Loans.postLoanRepayment);
+loanRoutes.get('/:id/repayments', Validate.id, Loans.getLoanRepayment);
 
 export default loanRoutes;

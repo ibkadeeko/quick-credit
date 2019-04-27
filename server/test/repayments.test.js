@@ -107,3 +107,41 @@ describe('POST /loans/:id/repayment', () => {
       });
   });
 });
+
+describe('GET /loans/:id/repayments', () => {
+  it('Should NOT return list of repayments if ID is invalid', (done) => {
+    const id = 'etc';
+    chai.request(app)
+      .get(`/api/v1/loans/${id}/repayments`)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(400);
+        done(err);
+      });
+  });
+  it('Should NOT return list of repayments if ID is not found', (done) => {
+    const id = 999;
+    chai.request(app)
+      .get(`/api/v1/loans/${id}/repayments`)
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.have.property('error');
+        res.body.should.have.property('status').eql(404);
+        done(err);
+      });
+  });
+  it('Should return list of repayments', (done) => {
+    const id = 10;
+    chai.request(app)
+      .get(`/api/v1/loans/${id}/repayments`)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('data');
+        res.body.data.should.be.a('array');
+        res.body.data[0].should.have.property('loanId').eql(id);
+        res.body.data[0].should.have.property('amount');
+        done(err);
+      });
+  });
+});

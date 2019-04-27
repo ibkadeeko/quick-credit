@@ -114,6 +114,16 @@ class Loans {
     }
     return errorRes(next, 404, 'Loan with this id was not found');
   }
+
+  static getLoanRepayment(req, res, next) {
+    const loanId = parseInt(req.params.id, 10);
+    const loanRepaymentsArray = RepaymentModel.findByLoanId(loanId);
+
+    if (loanRepaymentsArray.length) {
+      return successRes(res, 200, loanRepaymentsArray);
+    }
+    return errorRes(next, 404, `Repayments for Loan with ID: ${loanId} not found`);
+  }
 }
 
 export default Loans;
