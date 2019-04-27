@@ -31,6 +31,12 @@ class UserModel {
     usersDb.push(newUser);
     return usersDb[usersDb.length - 1];
   }
+
+  static verify(email) {
+    const index = usersDb.findIndex(user => user.email === email);
+    usersDb[index].status = 'verified';
+    return usersDb[index];
+  }
 }
 
 export default UserModel;

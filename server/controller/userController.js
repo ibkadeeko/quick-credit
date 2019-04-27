@@ -57,6 +57,16 @@ class Users {
     }
     return errorRes(next, 400, 'User with this email was not found');
   }
+
+  static verify(req, res, next) {
+    const { email } = req.params;
+    const user = UserModel.find(email);
+    if (user) {
+      const userObject = UserModel.verify(email);
+      return successRes(res, 200, userObject);
+    }
+    return errorRes(next, 404, 'User with this email was not found');
+  }
 }
 
 export default Users;
