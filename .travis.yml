@@ -10,7 +10,7 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - nyc --reporter=lcov npm run test
+  - npm run test && nyc --reporter=lcov
 after_success:
   - npm run coveralls
 after_script:
