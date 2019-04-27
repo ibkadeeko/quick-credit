@@ -44,6 +44,12 @@ class LoanModel {
     const approvedLoans = loanDb.filter(loan => loan.status === 'approved' && loan.repaid === repaid);
     return approvedLoans;
   }
+
+  static handleApproval(id, status) {
+    const index = loanDb.findIndex(loan => loan.id === id);
+    loanDb[index].status = status;
+    return loanDb[index];
+  }
 }
 
 export default LoanModel;

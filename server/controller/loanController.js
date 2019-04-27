@@ -74,6 +74,20 @@ class Loans {
     if (loan) { return successRes(res, 200, loan); }
     return errorRes(next, 404, 'Loan with this id was not found');
   }
+
+  static LoanApproval(req, res, next) {
+    const id = parseInt(req.params.id, 10);
+    const { status } = req.body;
+    const loanApplication = LoanModel.findById(id);
+    if (loanApplication) {
+      if (loanApplication.status !== 'pending') {
+        return errorRes(next, 400, 'Loan Approval Decision has already been made for this application');
+      }
+      const applicationRes = LoanModel.handleApproval(id, status);
+      return successRes(res, 200, applicationRes);
+    }
+    return errorRes(next, 404, 'Loan with this id was not found');
+  }
 }
 
 export default Loans;

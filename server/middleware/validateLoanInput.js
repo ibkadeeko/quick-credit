@@ -75,6 +75,24 @@ class Validate {
     }
     next();
   }
+
+  static loanApproval(req, res, next) {
+    req.checkParams('id')
+      .notEmpty()
+      .trim()
+      .isNumeric();
+    req.checkBody('status')
+      .notEmpty()
+      .trim()
+      .customSanitizer(status => status.toLowerCase())
+      .isIn(['approved', 'rejected'])
+      .withMessage('Invalid Status. It should be approved or rejected');
+    const errors = req.validationErrors();
+    if (errors) {
+      return errorRes(next, 400, errors[0].msg);
+    }
+    next();
+  }
 }
 
 export default Validate;
