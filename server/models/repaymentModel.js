@@ -13,6 +13,11 @@ class RepaymentModel {
     repaymentDb.push(newLoanRepayment);
     return repaymentDb[repaymentDb.length - 1];
   }
+
+  static findByLoanId(loanId) {
+    const loanRepayments = repaymentDb.filter(repayment => repayment.loanId === loanId);
+    return loanRepayments;
+  }
 }
 
 export default RepaymentModel;
