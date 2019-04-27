@@ -1,6 +1,7 @@
 import { errorRes, successRes } from '../utils/responseHandler';
 import { loanPayment } from '../utils/helperUtils';
 import LoanModel from '../models/loanModel';
+import RepaymentModel from '../models/repaymentModel';
 
 const userResSpec = ['id',
   'firstName',
@@ -85,6 +86,31 @@ class Loans {
       }
       const applicationRes = LoanModel.handleApproval(id, status);
       return successRes(res, 200, applicationRes);
+    }
+    return errorRes(next, 404, 'Loan with this id was not found');
+  }
+
+  // Loan Repayments
+
+  static postLoanRepayment(req, res, next) {
+    const loanId = parseInt(req.params.id, 10);
+    const paidAmount = parseFloat(req.body.amount, 10);
+    const loanObject = LoanModel.findById(loanId);
+    if (loanObject) {
+      if (loanObject.status !== 'approved') {
+        return errorRes(next, 400, 'Cannot make Payment for Unapproved Loan');
+      }
+      if (loanObject.repaid === true) {
+        return errorRes(next, 400, `Loan with ID: ${loanId} has been fully repaid`);
+      }
+      const {
+        amount, paymentInstallment: monthlyInstallment, repaid, balance,
+      } = LoanModel.updateBalance(loanId, paidAmount);
+      const { id, createdOn } = RepaymentModel.create(loanId, paidAmount);
+      const resObj = {
+        id, loanId, createdOn, amount, repaid, monthlyInstallment, paidAmount, balance,
+      };
+      return successRes(res, 200, resObj);
     }
     return errorRes(next, 404, 'Loan with this id was not found');
   }

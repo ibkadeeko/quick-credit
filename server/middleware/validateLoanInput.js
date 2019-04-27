@@ -68,7 +68,8 @@ class Validate {
     req.checkParams('id')
       .notEmpty()
       .trim()
-      .isNumeric();
+      .isNumeric()
+      .withMessage('Input a valid ID parameter');
     const errors = req.validationErrors();
     if (errors) {
       return errorRes(next, 400, errors[0].msg);
@@ -87,6 +88,25 @@ class Validate {
       .customSanitizer(status => status.toLowerCase())
       .isIn(['approved', 'rejected'])
       .withMessage('Invalid Status. It should be approved or rejected');
+    const errors = req.validationErrors();
+    if (errors) {
+      return errorRes(next, 400, errors[0].msg);
+    }
+    next();
+  }
+
+  static repayment(req, res, next) {
+    req.checkParams('id')
+      .notEmpty()
+      .trim()
+      .isNumeric()
+      .withMessage('Input a valid ID parameter');
+    req.checkBody('amount')
+      .notEmpty()
+      .withMessage('Amount is required')
+      .trim()
+      .isNumeric()
+      .withMessage('Input a valid Amount');
     const errors = req.validationErrors();
     if (errors) {
       return errorRes(next, 400, errors[0].msg);

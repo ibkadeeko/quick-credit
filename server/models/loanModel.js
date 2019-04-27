@@ -50,6 +50,15 @@ class LoanModel {
     loanDb[index].status = status;
     return loanDb[index];
   }
+
+  static updateBalance(id, amount) {
+    const index = loanDb.findIndex(loan => loan.id === id);
+    loanDb[index].balance -= amount;
+    if (loanDb[index].balance <= 0) {
+      loanDb[index].repaid = true;
+    }
+    return loanDb[index];
+  }
 }
 
 export default LoanModel;

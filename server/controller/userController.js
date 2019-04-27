@@ -60,9 +60,10 @@ class Users {
 
   static verify(req, res, next) {
     const { email } = req.params;
-    const user = UserModel.find(email);
-    if (user) {
-      const userObject = UserModel.verify(email);
+    const foundUser = UserModel.find(email);
+    if (foundUser) {
+      const user = UserModel.verify(email);
+      const userObject = keys.reduce((result, key) => ({ ...result, [key]: user[key] }), {});
       return successRes(res, 200, userObject);
     }
     return errorRes(next, 404, 'User with this email was not found');
