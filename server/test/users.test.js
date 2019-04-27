@@ -19,7 +19,8 @@ describe('PATCH /users/:email/verify', () => {
         done(err);
       });
   });
-  it('should NOT UPDATE if user email is not in the database', (done) => {    const email = 'mikemikemike@yahoo.com';
+  it('should NOT UPDATE if user email is not in the database', (done) => {
+    const email = 'mikemikemike@yahoo.com';
     chai.request(app)
       .patch(`/api/v1/users/${email}/verify`)
       .end((err, res) => {
