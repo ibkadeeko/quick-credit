@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { errorRes, successRes } from '../utils/responseHandler';
+import resetPassword from '../utils/email';
 import UserModel from '../models/userModel';
 
 dotenv.config();
@@ -67,6 +68,33 @@ class Users {
       return successRes(res, 200, userObject);
     }
     return errorRes(next, 404, 'User with this email was not found');
+  }
+
+  static async resetPassword(req, res, next) {
+    const { email } = req.body;
+    const foundUser = UserModel.find(email);
+    if (foundUser) {
+      const token = jwt.sign({ email }, process.env.SECRETkey, { expiresIn: '3h' });
+      const sent = await resetPassword(email, token);
+      if (!sent) return errorRes(next, 500, 'Unable to send Email');
+      return successRes(res, 200, { message: 'Reset Password Email Successfully Sent' });
+    }
+    return errorRes(next, 404, 'User with this email was not found');
+  }
+
+  static changePassword(req, res, next) {
+    const { password } = req.body;
+    const { token } = req.query;
+    try {
+      const { email } = jwt.verify(token, process.env.SECRETkey);
+      const foundUser = UserModel.find(email);
+      if (!foundUser) return errorRes(next, 404, 'User with this email was not found');
+      const hashedPassword = bcrypt.hashSync(password, 8);
+      const update = UserModel.changePassword(email, hashedPassword);
+      return successRes(res, 200, update);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 
