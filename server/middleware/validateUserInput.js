@@ -82,6 +82,38 @@ class Validate {
     }
     next();
   }
+
+  static reset(req, res, next) {
+    req.checkBody('email')
+      .notEmpty()
+      .withMessage('Email is required')
+      .trim()
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      )
+      .withMessage('Input a valid email Parameter')
+      .customSanitizer(email => email.toLowerCase());
+    const errors = req.validationErrors();
+    if (errors) {
+      return errorRes(next, 400, errors[0].msg);
+    }
+    next();
+  }
+
+  static changePassword(req, res, next) {
+    req.checkQuery('token')
+      .notEmpty()
+      .withMessage('Reset Token Query is required');
+    req.checkBody('password')
+      .trim()
+      .notEmpty()
+      .withMessage('Password is required');
+    const errors = req.validationErrors();
+    if (errors) {
+      return errorRes(next, 400, errors[0].msg);
+    }
+    next();
+  }
 }
 
 export default Validate;

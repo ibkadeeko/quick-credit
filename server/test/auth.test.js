@@ -1,8 +1,11 @@
 import chai from 'chai';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import chaiHttp from 'chai-http';
 import { it, describe } from 'mocha';
-
 import app from '../app';
+
+dotenv.config();
 
 chai.use(chaiHttp);
 chai.should();
@@ -241,6 +244,95 @@ describe('POST auth/login', () => {
         res.body.should.be.a('object');
         res.body.data.should.be.a('object');
         res.body.data.should.have.property('token');
+        done(err);
+      });
+  });
+});
+
+const email = 'tomblack@mandela.com';
+const fakeEmail = 'ibkizzles@outlook.com'
+const token = jwt.sign({ email }, process.env.SECRETkey, { expiresIn: '3h' });
+const fakeToken = jwt.sign({ fakeEmail }, process.env.SECRETkey, { expiresIn: '3h' });
+
+describe('POST /reset', () => {
+  it('Should not reset if email is omitted', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/reset')
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('Should not reset if user is not found', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/reset')
+      .send({ email: 'ibukunadeeko@outlook.com' })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('Should send reset email', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/reset')
+      .send({ email })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('status').eql(200);
+        res.body.should.be.a('object');
+        res.body.data.should.be.a('object');
+        res.body.data.should.have.property('message').eql('Reset Password Email Successfully Sent');
+        done(err);
+      });
+  });
+});
+
+describe('POST /resetpassword', () => {
+  it('Should not reset password if password is omitted', (done) => {
+    chai.request(app)
+      .post(`/api/v1/auth/resetpassword?token=${token}`)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('Should not reset password if token is omitted', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/resetpassword')
+      .send({ password: '123456' })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('Should not reset password if email is not in database', (done) => {
+    chai.request(app)
+      .post(`/api/v1/auth/resetpassword?token=${fakeToken}`)
+      .send({ password: '123456' })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('error');
+        done(err);
+      });
+  });
+  it('Should not reset password', (done) => {
+    chai.request(app)
+      .post(`/api/v1/auth/resetpassword?token=${token}`)
+      .send({ password: '123456' })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('status').eql(200);
+        res.body.should.be.a('object');
+        res.body.data.should.be.a('object');
         done(err);
       });
   });

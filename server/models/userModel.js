@@ -37,6 +37,12 @@ class UserModel {
     usersDb[index].status = 'verified';
     return usersDb[index];
   }
+
+  static changePassword(email, password) {
+    const index = usersDb.findIndex(user => user.email === email);
+    usersDb[index].password = password;
+    return usersDb[index];
+  }
 }
 
 export default UserModel;
