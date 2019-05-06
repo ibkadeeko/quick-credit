@@ -4,7 +4,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const resetPassword = async (email, token) => {
+/**
+ * This is a helper function that sends an email to a user
+ * with a URL containing the token to reset password
+ * @param {string} email - The receivers email
+ * @param {string} token - Unique token to be sent to the user
+ */
+const resetPasswordEmail = async (email, token) => {
+  /**
+   * This is the message object that will be sent using the SendGrid API
+   * @type {object}
+   */
   const msg = {
     to: email,
     from: { email: 'noreply@quickcredit.com', name: 'Quick Credit' },
@@ -28,4 +38,4 @@ const resetPassword = async (email, token) => {
   }
 };
 
-export default resetPassword;
+export default resetPasswordEmail;

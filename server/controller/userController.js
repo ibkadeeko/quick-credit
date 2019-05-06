@@ -2,13 +2,23 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import { errorRes, successRes } from '../utils/responseHandler';
-import resetPassword from '../utils/email';
+import resetPasswordEmail from '../utils/email';
 import UserModel from '../models/userModel';
 
 dotenv.config();
 
 const keys = ['id', 'firstName', 'lastName', 'email', 'phone', 'status', 'registered'];
+
+/**
+ * Contains all the user route methods
+ */
 class Users {
+  /**
+   * Register a new user
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static signup(req, res, next) {
     const {
       firstName, lastName, email, password, phone,
@@ -25,7 +35,6 @@ class Users {
       status: 'unverified',
       isAdmin: false,
     };
-    // JWT for token
     const userObject = UserModel.create(newUser);
     // Remember to use an if else statement for the remaining logic when using db
     const payload = {
@@ -33,14 +42,18 @@ class Users {
       email: userObject.email,
       isAdmin: userObject.isAdmin,
     };
-    // create a token
     const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
     // hide password and admin status from response
     const user = keys.reduce((result, key) => ({ ...result, [key]: userObject[key] }), {});
-    // delete userObject.password;
     return successRes(res, 201, { token, user });
   }
 
+  /**
+   * Log in a user
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static login(req, res, next) {
     const { email, password } = req.body;
     const user = UserModel.find(email);
@@ -59,6 +72,12 @@ class Users {
     return errorRes(next, 400, 'User with this email was not found');
   }
 
+  /**
+   * Verify a User after confirming Home/Work Address
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static verify(req, res, next) {
     const { email } = req.params;
     const foundUser = UserModel.find(email);
@@ -70,18 +89,30 @@ class Users {
     return errorRes(next, 404, 'User with this email was not found');
   }
 
+  /**
+   * Send an email to a user to reset password
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static async resetPassword(req, res, next) {
     const { email } = req.body;
     const foundUser = UserModel.find(email);
     if (foundUser) {
       const token = jwt.sign({ email }, process.env.SECRETkey, { expiresIn: '3h' });
-      const sent = await resetPassword(email, token);
+      const sent = await resetPasswordEmail(email, token);
       if (!sent) return errorRes(next, 500, 'Unable to send Email');
       return successRes(res, 200, { message: 'Reset Password Email Successfully Sent' });
     }
     return errorRes(next, 404, 'User with this email was not found');
   }
 
+  /**
+   * Change a users password
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static changePassword(req, res, next) {
     const { password } = req.body;
     const { token } = req.query;

@@ -1,3 +1,7 @@
+/**
+ * @file Serves the application
+ * @requires ./app
+ */
 import app from './app';
 
 const port = process.env.PORT || 4001;

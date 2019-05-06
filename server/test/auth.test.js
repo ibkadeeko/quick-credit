@@ -250,7 +250,7 @@ describe('POST auth/login', () => {
 });
 
 const email = 'tomblack@mandela.com';
-const fakeEmail = 'ibkizzles@outlook.com'
+const fakeEmail = 'ibkizzles@outlook.com';
 const token = jwt.sign({ email }, process.env.SECRETkey, { expiresIn: '3h' });
 const fakeToken = jwt.sign({ fakeEmail }, process.env.SECRETkey, { expiresIn: '3h' });
 

@@ -15,7 +15,16 @@ const userResSpec = ['id',
   'interest',
   'createdOn'];
 
+/**
+ * Contains all the /loan route endpoint methods
+ */
 class Loans {
+  /**
+   * Creates a new Loan Application
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static create(req, res, next) {
     const {
       firstName, lastName, email, amount, tenor,
@@ -35,8 +44,11 @@ class Loans {
       balance,
       interest,
     };
-    // Retrieve or Loan objects created by the user from db if any
+    // Retrieve all Loan objects created by the user from db if any
     const userLoanArray = LoanModel.find(email);
+    /**
+     * Check to ensure that user does not have any ongoing Loans or pending application
+     */
     let noOngoingLoans;
     if (userLoanArray.length > 0) {
       // Remove all rejected loans if any
@@ -54,6 +66,12 @@ class Loans {
     return errorRes(next, 400, 'User with this email has an Ongoing Loan');
   }
 
+  /**
+   * Returns an array of all Loans
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static getAll(req, res, next) {
     if (Object.keys(req.query).length === 0) {
       const allLoans = LoanModel.getAllLoans();
@@ -69,6 +87,12 @@ class Loans {
     return errorRes(next, 400, 'Invalid Request');
   }
 
+  /**
+   * Returns the data of a single Loan
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static getOne(req, res, next) {
     const id = parseInt(req.params.id, 10);
     const loan = LoanModel.findById(id);
@@ -76,6 +100,12 @@ class Loans {
     return errorRes(next, 404, 'Loan with this id was not found');
   }
 
+  /**
+   * Method to approve or reject a loan application
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static LoanApproval(req, res, next) {
     const id = parseInt(req.params.id, 10);
     const { status } = req.body;
@@ -92,9 +122,16 @@ class Loans {
 
   // Loan Repayments
 
+  /**
+   * Method to create a loan Repayment Entry. Post Loan repayment
+   * in favor of user and update Loan balance
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static postLoanRepayment(req, res, next) {
     const loanId = parseInt(req.params.id, 10);
-    const paidAmount = parseFloat(req.body.amount, 10);
+    const paidAmount = parseFloat(req.body.amount);
     const loanObject = LoanModel.findById(loanId);
     if (loanObject) {
       if (loanObject.status !== 'approved') {
@@ -115,6 +152,12 @@ class Loans {
     return errorRes(next, 404, 'Loan with this id was not found');
   }
 
+  /**
+   * Returns All Loan Repayments for a specific loan
+   * @param {object} req - request
+   * @param {object} res - response
+   * @param {*} next
+   */
   static getLoanRepayment(req, res, next) {
     const loanId = parseInt(req.params.id, 10);
     const loanRepaymentsArray = RepaymentModel.findByLoanId(loanId);

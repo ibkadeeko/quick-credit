@@ -1,3 +1,10 @@
+/**
+ * @module app
+ * @desc Manages the express configuration settings for the application.
+ * @requires express
+ * @requires express-validator
+ * @requires /routes
+ */
 import express from 'express';
 import expressValidator from 'express-validator';
 import { errorRes, successRes } from './utils/responseHandler';
@@ -5,9 +12,11 @@ import routes from './routes';
 
 const app = express();
 
-// Body Parser
+// Setup Body Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Setup Validator
 app.use(expressValidator());
 
 // Connect all routes to the application
