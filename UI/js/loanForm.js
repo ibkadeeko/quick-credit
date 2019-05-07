@@ -1,6 +1,7 @@
 const formList = document.querySelectorAll('form');
 const loanApplicationDetails = {};
 
+/** Retrieve ALL values from the Loan Application form  */
 formList.forEach((form, index) => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
