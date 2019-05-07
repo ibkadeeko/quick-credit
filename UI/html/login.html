@@ -32,7 +32,7 @@
               <input name="lastName" type="text" placeholder="Last name" pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$" required/>
               <input name="password" type="password" placeholder="Password" minlength="6" required/>
               <input name="email" type="email" placeholder="Email address" required/>
-              <input name="phoneNumber" type="text" pattern="[0-9]{11}" placeholder="Phone number" required/>
+              <input title="Must be 11 digits" name="phoneNumber" type="text" pattern="[0-9]{11}" placeholder="Phone number" required/>
               <button>register</button>
               <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>

@@ -143,12 +143,11 @@ header .toggle-nav {
 
 /****** HERO ******/
 #hero {
-	background: linear-gradient(to right bottom, rgba(69,84,100, 0.5), rgba(38,46,55, 0.8)),
-	url(../img/hero-bg.jpg) no-repeat;
-	background-size: cover;
-	background-position: center;
+	background: linear-gradient(to right bottom, rgba(69, 84, 100, 0.5), rgba(38, 46, 55, 0.8)),
+	center / cover no-repeat url("https://ucarecdn.com/98830d9c-5dee-49f7-858b-a6c87eff2596/herobg.jpg");
 	color: white;
   height: 50rem;
+  width: 100%;
 	margin-top: 7rem;
 	display: flex;
 	flex-direction: column;
@@ -529,6 +528,7 @@ background-color: #f5f5f5;
   padding: 4rem;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  margin-bottom: var(--m-2x-size);
 }
 
 .form input {

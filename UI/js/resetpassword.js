@@ -9,7 +9,7 @@ const message = document.querySelector('.offset');
 // const urlParams = new URLSearchParams(window.location.search);
 // const resetToken = urlParams.get('token');
 
-// Check password
+/** Check that password and Confirm Password are the same */
 const check = () => {
   if (password.value !== confirmPassword.value) {
     message.style.color = 'red';
@@ -19,6 +19,7 @@ const check = () => {
 };
 
 if (password && confirmPassword) {
+  /** Clear Error message  */
   [password, confirmPassword].forEach((elem) => {
     elem.addEventListener('input', () => {
       message.innerHTML = '';
@@ -33,7 +34,7 @@ if (reset) {
     if (matching) {
       // Do something
     }
-  }); 
+  });
 }
 
 if (forgotPassword) {
@@ -42,5 +43,3 @@ if (forgotPassword) {
     // Do Something
   });
 }
-
-
