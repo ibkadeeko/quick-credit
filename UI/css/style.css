@@ -144,7 +144,7 @@ header .toggle-nav {
 /****** HERO ******/
 #hero {
 	background: linear-gradient(to right bottom, rgba(69, 84, 100, 0.5), rgba(38, 46, 55, 0.8)),
-	center / cover no-repeat url("https://ucarecdn.com/98830d9c-5dee-49f7-858b-a6c87eff2596/herobg.jpg");
+	center / cover no-repeat url("../img/hero-bg.jpg");
 	color: white;
   height: 50rem;
   width: 100%;
@@ -192,7 +192,7 @@ header .toggle-nav {
 .box-display {
   align-items: flex-start;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 30rem);
+  grid-template-columns: repeat(auto-fit, 30rem);
   grid-column-gap: 2rem;
   justify-content: space-evenly;
 }
@@ -371,8 +371,9 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 /*********** Table ***********/
 .table {
-margin: 0;
 border-collapse: collapse;
+margin: 0;
+width: 100%;
 }
 
 .table-responsive.table--no-card {
@@ -402,8 +403,9 @@ white-space: nowrap;
 }
 
 .table-earning.repayment-table thead th {
-padding: 2.2rem 3.2rem;
+padding: 2.2rem 4rem;
 vertical-align: middle;
+text-align: left;
 }
 
 .table-earning thead th.text-right {
