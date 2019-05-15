@@ -456,7 +456,6 @@ vertical-align: baseline;
 font-weight: 400;
 text-transform: capitalize;
 line-height: 1;
-/* padding: 2.2rem 4rem; */
 padding: 1rem 3.2rem 2.4rem 3.2rem;
 white-space: nowrap;
 }
@@ -716,7 +715,8 @@ form .form-group div>input {
 .user-preview {
   color: var(--primary-black);
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, 25rem);
+  justify-content: space-evenly;
   margin: var(--m-2x-size) auto;
 }
 
@@ -725,7 +725,6 @@ form .form-group div>input {
   margin: var(--m-2x-size) auto;
   height: 32rem;
   width: 100%;
-  max-width: 36rem;
   overflow: auto;
 }
 
@@ -741,52 +740,26 @@ form .form-group div>input {
   line-height: var(--m-size);
   padding: 2rem 3.2rem;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .card-body {
   padding: 1rem;
-}
-
-.my-loans .card-body p {
-  font-size: var(--m-size);
-  padding-left: 1.6rem;
-}
-
-.my-loans .card-body p.repayment__value {
-  font-size: var(--m-2x-size);
-}
-
-.my-loans .card-body {
   display: flex;
   flex-direction: column;
-}
-
-.my-loans .card-body div:nth-child(2) {
-  height: 17.5rem;
-  align-self: center;
-  flex-direction: column;
-  justify-items: center;
-  padding-top: var(--m-2x-size);
-}
-
-.my-loans .card-body > div {
-  display: flex;
-  flex-direction: row;
-}
-
-.my-loans .card-body > div p {
-  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 5.6rem);
 }
 
 .overview__title {
   color: #7b7f83;
   font-size: var(--m-size);
-  margin-left: var(--m-2x-size);
   text-transform: capitalize;
 }
 
 .overview__value {
-  font-size: var(--m-3x-size);
+  font-size: var(--m-2x-size);
   text-align: center;
   margin-bottom: var(--m-2x-size);
 }
@@ -804,7 +777,6 @@ form .form-group div>input {
   color: #7c7c80;
   display: block;
   font-size: 1rem;
-  text-align: left;
   text-transform: uppercase;
 }
 /* ========================== */
@@ -964,10 +936,6 @@ footer>p{
 
 	.rfy-content .rfy__title {
 		text-align: left;
-  }
-  
-  .user-preview {
-    grid-template-columns: 1fr 1fr;
   }
 
   .user-preview > div {
