@@ -141,6 +141,65 @@ header .toggle-nav {
 
 /* ============================ */
 
+/********* DASHBOARD SIDEBAR ***********/
+div#main-body > .wrapper {
+  height: calc(100vh - 12rem);
+}
+
+div#main-body > .wrapper #main{
+  height: 100%;
+  overflow: auto;
+}
+
+div#main-body > .wrapper #sidebar{
+  background: #7b7f83;
+  color: white;
+  cursor: pointer;
+  font-size: var(--m-size);
+  height: calc(100% - 12rem);
+  width: 25rem;
+  left: -25rem;
+  margin: 0;
+  position: fixed;
+  text-transform: uppercase;
+}
+
+div#main-body > .wrapper #sidebar.active{
+  left: 0px;
+  transition: all 600ms 300ms ease-in-out;
+}
+
+div#main-body > .wrapper  #sidebar ul{
+  width: 100%;
+  margin-top: var(--m-2x-size);
+}
+div#main-body > .wrapper  #sidebar ul li{
+  padding: 1.6rem 1rem;
+  border-bottom: 1px solid var(--primary-black);
+}
+
+div#main-body > .wrapper  #sidebar ul li a.current{
+  color: white;
+	font-weight: 700;
+}
+
+@media only screen and (min-width: 770px) {
+  div#main-body > .wrapper {
+    display: flex;
+  }
+  
+  div#main-body > .wrapper #main{
+    flex: 1;
+  }
+  
+  div#main-body > .wrapper  #sidebar{
+    position: inherit;
+    display: inherit;
+    height: 100%;
+  }
+}
+/* ==================================== */
+
 /****** HERO ******/
 #hero {
 	background: linear-gradient(to right bottom, rgba(69, 84, 100, 0.5), rgba(38, 46, 55, 0.8)),
@@ -759,12 +818,13 @@ form .form-group div>input {
 
 .payment-btn {
   margin: 2rem 0 4rem;
-  font-size: 2.4rem;
+  font-size: 1.8rem;
 }
 
 /******* MODAL ********/
 section.mg-top {
   margin-top: var(--m-x-size);
+  text-align: center;
 }
 
 #click {
