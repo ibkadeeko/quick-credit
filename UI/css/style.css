@@ -582,7 +582,7 @@ background-color: #f5f5f5;
 
 .login-page .form {
   background: #FFFFFF;
-  max-height: 48rem;
+  max-height: 52rem;
   overflow: hidden;
   width: 100%;
   padding: 4rem;
@@ -667,7 +667,7 @@ background-color: #f5f5f5;
 }
 
 .login-page form {
-  max-height: 48rem;
+  max-height: 52rem;
   opacity: 1;
   overflow: hidden;
   transition: all 600ms 300ms ease-in-out;
