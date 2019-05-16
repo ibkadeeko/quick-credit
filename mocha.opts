@@ -1,0 +1,3 @@
+--file ./server/test/testData/createTables.js
+--file ./server/test/testData/populateTables.js
+--file ./server/test/testData/dropTables.js
