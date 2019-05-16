@@ -146,9 +146,9 @@ describe('POST auth/signup', () => {
       .post('/api/v1/auth/signup')
       .send(newUser)
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(409);
         res.body.should.have.property('error');
-        res.body.should.have.property('status').eql(400);
+        res.body.should.have.property('status').eql(409);
         done(err);
       });
   });
@@ -164,8 +164,8 @@ describe('POST auth/signup', () => {
       .post('/api/v1/auth/signup')
       .send(newUser)
       .end((err, res) => {
-        res.should.have.status(400);
-        res.body.should.have.property('status').eql(400);
+        res.should.have.status(409);
+        res.body.should.have.property('status').eql(409);
         done(err);
       });
   });
@@ -181,9 +181,9 @@ describe('POST auth/login', () => {
       .post('/api/v1/auth/login')
       .send(loginDetails)
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(404);
         res.body.should.have.property('error');
-        res.body.should.have.property('status').eql(400);
+        res.body.should.have.property('status').eql(404);
         done(err);
       });
   });

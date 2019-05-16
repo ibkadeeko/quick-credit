@@ -7,28 +7,25 @@ import app from '../app';
 chai.use(chaiHttp);
 chai.should();
 
+let request;
+beforeEach(() => {
+  request = chai.request(app);
+});
+
 describe('Root Route', () => {
-  it('should display Welcome on root route', (done) => {
-    chai.request(app)
-      .get('/')
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        res.body.data.should.have.property('message').eql('Welcome to Quick Credit API v1');
-        done(err);
-      });
+  it('should display Welcome on root route', async () => {
+    const res = await request.get('/');
+    res.should.have.status(200);
+    res.body.should.be.a('object');
+    res.body.data.should.have.property('message').eql('Welcome to Quick Credit API v1');
   });
 });
 
 describe('Invalid Route', () => {
-  it('should display 404 error', (done) => {
-    chai.request(app)
-      .get('/invalid/route')
-      .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.be.a('object');
-        res.body.should.have.property('error').eql('The Route you are requesting for does not exist');
-        done(err);
-      });
+  it('should display 404 error', async () => {
+    const res = await request.get('/invalid/route');
+    res.should.have.status(404);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error').eql('The Route you are requesting for does not exist');
   });
 });

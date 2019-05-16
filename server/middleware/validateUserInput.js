@@ -36,6 +36,7 @@ class Validate {
       .withMessage('Phone number is required')
       .trim()
       .isNumeric()
+      .isInt()
       .withMessage('Input a valid Phone Number')
       .isLength({ min: 8 })
       .withMessage('Minimum length of Phone Number is 8 digits');
@@ -45,7 +46,7 @@ class Validate {
     }
     next();
   }
-  
+
   static login(req, res, next) {
     req.checkBody('email')
       .notEmpty()

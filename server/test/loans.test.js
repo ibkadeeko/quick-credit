@@ -141,9 +141,9 @@ describe('POST /loans', () => {
       .post('/api/v1/loans')
       .send(loanApplication)
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(409);
         res.body.should.have.property('error');
-        res.body.should.have.property('status').eql(400);
+        res.body.should.have.property('status').eql(409);
         done(err);
       });
   });
@@ -159,9 +159,9 @@ describe('POST /loans', () => {
       .post('/api/v1/loans')
       .send(loanApplication)
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(409);
         res.body.should.have.property('error');
-        res.body.should.have.property('status').eql(400);
+        res.body.should.have.property('status').eql(409);
         done(err);
       });
   });
