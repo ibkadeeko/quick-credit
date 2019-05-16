@@ -513,7 +513,8 @@ background-color: #f5f5f5;
 	border-radius: 0.8rem;
 }
 
-.login_btn.no-border {
+.login_btn.no-border,
+.btn.no-border {
 	border-radius: 0;
 }
 
@@ -784,7 +785,7 @@ form .form-group div>input {
 .loan-decision {
   display: flex;
   margin: 2rem 0 4rem;
-  font-size: 2.4rem;
+  font-size: 1.8rem;
   justify-content: space-evenly;
 }
 
