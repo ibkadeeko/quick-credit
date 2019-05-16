@@ -12,6 +12,7 @@ const back = document.querySelector('#back');
 const naira = '\u20A6';
 const click = document.getElementById('click');
 const login = document.querySelector('#login-form');
+const sideBar = document.querySelector('#sidebar');
 
 /**
  * Calculates the total interest(principal included) on a loan and monthly repayment
@@ -30,6 +31,13 @@ function loanPayment(amount, months) {
 if (menuToggle && navBar) {
   menuToggle.addEventListener('click', () => {
     navBar.classList.toggle('menu');
+  });
+}
+
+/** Toggles the sidebar display */
+if (menuToggle && sideBar) {
+  menuToggle.addEventListener('click', () => {
+    sideBar.classList.toggle('active');
   });
 }
 
