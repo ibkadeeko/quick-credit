@@ -1,11 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
 import { errorRes, successRes } from '../utils/responseHandler';
 import resetPasswordEmail from '../utils/email';
 import UserModel from '../models/userModel';
-
-dotenv.config();
 
 const keys = ['id', 'firstName', 'lastName', 'email', 'phone', 'status', 'registered'];
 
@@ -43,7 +40,7 @@ class Users {
     };
     const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
     const user = keys.reduce((result, key) => ({ ...result, [key]: userObject[key] }), {});
-    return successRes(res, 201, { token, user });
+    return successRes(res, 201, { token, user, message: 'User successfully created' });
   }
 
   /**
@@ -65,7 +62,7 @@ class Users {
     };
     const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
     const userObject = keys.reduce((result, key) => ({ ...result, [key]: user[key] }), {});
-    return successRes(res, 200, { token, user: userObject });
+    return successRes(res, 200, { token, user: userObject, message: 'User logIn successful' });
   }
 
   /**

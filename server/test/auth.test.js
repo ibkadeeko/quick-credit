@@ -1,11 +1,8 @@
 import chai from 'chai';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import chaiHttp from 'chai-http';
 import { it, describe } from 'mocha';
 import app from '../app';
-
-dotenv.config();
 
 chai.use(chaiHttp);
 chai.should();
