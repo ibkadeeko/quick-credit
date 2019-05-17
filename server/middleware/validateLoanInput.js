@@ -38,6 +38,7 @@ class Validate {
       .withMessage('tenor is required')
       .trim()
       .isNumeric()
+      .isInt()
       .withMessage('Input a valid tenor')
       .isInt({ min: 1, max: 12 })
       .withMessage('tenor must be a value between 1 and 12');
@@ -69,6 +70,7 @@ class Validate {
       .notEmpty()
       .trim()
       .isNumeric()
+      .isInt()
       .withMessage('Input a valid ID parameter');
     const errors = req.validationErrors();
     if (errors) {
@@ -81,7 +83,8 @@ class Validate {
     req.checkParams('id')
       .notEmpty()
       .trim()
-      .isNumeric();
+      .isNumeric()
+      .isInt();
     req.checkBody('status')
       .notEmpty()
       .trim()
@@ -100,6 +103,7 @@ class Validate {
       .notEmpty()
       .trim()
       .isNumeric()
+      .isInt()
       .withMessage('Input a valid ID parameter');
     req.checkBody('amount')
       .notEmpty()

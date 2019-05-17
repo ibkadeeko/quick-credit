@@ -3,7 +3,8 @@ import { loanPayment } from '../utils/helperUtils';
 import LoanModel from '../models/loanModel';
 import RepaymentModel from '../models/repaymentModel';
 
-const userResSpec = ['id',
+const userResSpec = [
+  'id',
   'firstName',
   'lastName',
   'email',
@@ -13,7 +14,8 @@ const userResSpec = ['id',
   'paymentInstallment',
   'balance',
   'interest',
-  'createdOn'];
+  'createdOn',
+];
 
 /**
  * Contains all the /loan route endpoint methods
@@ -23,7 +25,7 @@ class Loans {
    * Creates a new Loan Application
    * @param {object} req - request
    * @param {object} res - response
-   * @param {*} next
+   * @param {function} next
    */
   static create(req, res, next) {
     const {
@@ -44,33 +46,32 @@ class Loans {
       balance,
       interest,
     };
-    // Retrieve all Loan objects created by the user from db if any
     const userLoanArray = LoanModel.find(email);
     /**
      * Check to ensure that user does not have any ongoing Loans or pending application
      */
     let noOngoingLoans;
     if (userLoanArray.length > 0) {
-      // Remove all rejected loans if any
-      const filteredLoan = userLoanArray
-        .filter(loan => loan.status === 'approved' || loan.status === 'pending');
-      // Check that all approved loans have been fully paid
-      noOngoingLoans = filteredLoan.every(loan => (loan.status !== 'pending'
-      && (loan.status === 'approved' && loan.repaid !== false)));
+      const filteredLoan = userLoanArray.filter(
+        loan => loan.status === 'approved' || loan.status === 'pending',
+      );
+      noOngoingLoans = filteredLoan.every(
+        loan => loan.status !== 'pending' && (loan.status === 'approved' && loan.repaid !== false),
+      );
     }
     if (!userLoanArray.length || noOngoingLoans) {
       const newLoan = LoanModel.create(loanApplication);
       const resObj = userResSpec.reduce((result, key) => ({ ...result, [key]: newLoan[key] }), {});
       return successRes(res, 201, resObj);
     }
-    return errorRes(next, 400, 'User with this email has an Ongoing Loan');
+    return errorRes(next, 409, 'User with this email has an Ongoing Loan');
   }
 
   /**
    * Returns an array of all Loans
    * @param {object} req - request
    * @param {object} res - response
-   * @param {*} next
+   * @param {function} next
    */
   static getAll(req, res, next) {
     if (Object.keys(req.query).length === 0) {
@@ -91,81 +92,94 @@ class Loans {
    * Returns the data of a single Loan
    * @param {object} req - request
    * @param {object} res - response
-   * @param {*} next
+   * @param {function} next
    */
   static getOne(req, res, next) {
     const id = parseInt(req.params.id, 10);
     const loan = LoanModel.findById(id);
-    if (loan) { return successRes(res, 200, loan); }
-    return errorRes(next, 404, 'Loan with this id was not found');
+    if (!loan) {
+      return errorRes(next, 404, 'Loan with this id was not found');
+    }
+    return successRes(res, 200, loan);
   }
 
   /**
    * Method to approve or reject a loan application
    * @param {object} req - request
    * @param {object} res - response
-   * @param {*} next
+   * @param {function} next
    */
   static LoanApproval(req, res, next) {
     const id = parseInt(req.params.id, 10);
     const { status } = req.body;
     const loanApplication = LoanModel.findById(id);
-    if (loanApplication) {
-      if (loanApplication.status !== 'pending') {
-        return errorRes(next, 400, 'Loan Approval Decision has already been made for this application');
-      }
-      const applicationRes = LoanModel.handleApproval(id, status);
-      return successRes(res, 200, applicationRes);
+    if (!loanApplication) {
+      return errorRes(next, 404, 'Loan with this id was not found');
     }
-    return errorRes(next, 404, 'Loan with this id was not found');
+    if (loanApplication.status !== 'pending') {
+      return errorRes(
+        next,
+        400,
+        'Loan Approval Decision has already been made for this application',
+      );
+    }
+    const applicationRes = LoanModel.handleApproval(id, status);
+    return successRes(res, 200, applicationRes);
   }
-
-  // Loan Repayments
 
   /**
    * Method to create a loan Repayment Entry. Post Loan repayment
    * in favor of user and update Loan balance
    * @param {object} req - request
    * @param {object} res - response
-   * @param {*} next
+   * @param {function} next
    */
   static postLoanRepayment(req, res, next) {
     const loanId = parseInt(req.params.id, 10);
     const paidAmount = parseFloat(req.body.amount);
     const loanObject = LoanModel.findById(loanId);
-    if (loanObject) {
-      if (loanObject.status !== 'approved') {
-        return errorRes(next, 400, 'Cannot make Payment for Unapproved Loan');
-      }
-      if (loanObject.repaid === true) {
-        return errorRes(next, 400, `Loan with ID: ${loanId} has been fully repaid`);
-      }
-      const {
-        amount, paymentInstallment: monthlyInstallment, repaid, balance,
-      } = LoanModel.updateBalance(loanId, paidAmount);
-      const { id, createdOn } = RepaymentModel.create(loanId, paidAmount);
-      const resObj = {
-        id, loanId, createdOn, amount, repaid, monthlyInstallment, paidAmount, balance,
-      };
-      return successRes(res, 200, resObj);
+    if (!loanObject) {
+      return errorRes(next, 404, 'Loan with this id was not found');
     }
-    return errorRes(next, 404, 'Loan with this id was not found');
+    if (loanObject.status !== 'approved') {
+      return errorRes(next, 400, 'Cannot make Payment for Unapproved Loan');
+    }
+    if (loanObject.repaid === true) {
+      return errorRes(next, 400, `Loan with ID: ${loanId} has been fully repaid`);
+    }
+    const {
+      amount,
+      paymentInstallment: monthlyInstallment,
+      repaid,
+      balance,
+    } = LoanModel.updateBalance(loanId, paidAmount);
+    const { id, createdOn } = RepaymentModel.create(loanId, paidAmount);
+    const resObj = {
+      id,
+      loanId,
+      createdOn,
+      amount,
+      repaid,
+      monthlyInstallment,
+      paidAmount,
+      balance,
+    };
+    return successRes(res, 200, resObj);
   }
 
   /**
    * Returns All Loan Repayments for a specific loan
    * @param {object} req - request
    * @param {object} res - response
-   * @param {*} next
+   * @param {function} next
    */
   static getLoanRepayment(req, res, next) {
     const loanId = parseInt(req.params.id, 10);
     const loanRepaymentsArray = RepaymentModel.findByLoanId(loanId);
-
-    if (loanRepaymentsArray.length) {
-      return successRes(res, 200, loanRepaymentsArray);
+    if (!loanRepaymentsArray.length) {
+      return errorRes(next, 404, `Repayments for Loan with ID: ${loanId} not found`);
     }
-    return errorRes(next, 404, `Repayments for Loan with ID: ${loanId} not found`);
+    return successRes(res, 200, loanRepaymentsArray);
   }
 }
 
