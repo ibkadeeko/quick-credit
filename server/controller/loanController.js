@@ -1,20 +1,20 @@
 import { errorRes, successRes } from '../utils/responseHandler';
-import { loanPayment } from '../utils/helperUtils';
+import loanPayment from '../utils/helperUtils';
 import LoanModel from '../models/loanModel';
 import RepaymentModel from '../models/repaymentModel';
 
 const userResSpec = [
   'id',
-  'firstName',
-  'lastName',
+  'firstname',
+  'lastname',
   'email',
   'amount',
   'tenor',
   'status',
-  'paymentInstallment',
+  'paymentinstallment',
   'balance',
   'interest',
-  'createdOn',
+  'createdon',
 ];
 
 /**
@@ -27,7 +27,7 @@ class Loans {
    * @param {object} res - response
    * @param {function} next
    */
-  static create(req, res, next) {
+  static async create(req, res, next) {
     const {
       firstName, lastName, email, amount, tenor,
     } = req.body;
@@ -46,7 +46,7 @@ class Loans {
       balance,
       interest,
     };
-    const userLoanArray = LoanModel.find(email);
+    const userLoanArray = await LoanModel.find(email);
     /**
      * Check to ensure that user does not have any ongoing Loans or pending application
      */
@@ -60,7 +60,8 @@ class Loans {
       );
     }
     if (!userLoanArray.length || noOngoingLoans) {
-      const newLoan = LoanModel.create(loanApplication);
+      const newLoan = await LoanModel.create(loanApplication);
+      if (!newLoan) return errorRes(next, 500, 'Internal Server Error');
       const resObj = userResSpec.reduce((result, key) => ({ ...result, [key]: newLoan[key] }), {});
       return successRes(res, 201, resObj);
     }
@@ -73,16 +74,16 @@ class Loans {
    * @param {object} res - response
    * @param {function} next
    */
-  static getAll(req, res, next) {
+  static async getAll(req, res, next) {
     if (Object.keys(req.query).length === 0) {
-      const allLoans = LoanModel.getAllLoans();
+      const allLoans = await LoanModel.getAllLoans();
       return successRes(res, 200, allLoans);
     }
     const { status } = req.query;
     let { repaid } = req.query;
     if (status && repaid) {
       repaid = JSON.parse(repaid);
-      const approvedLoans = LoanModel.getApprovedLoans(repaid);
+      const approvedLoans = await LoanModel.getApprovedLoans(repaid);
       return successRes(res, 200, approvedLoans);
     }
     return errorRes(next, 400, 'Invalid Request');
@@ -94,9 +95,9 @@ class Loans {
    * @param {object} res - response
    * @param {function} next
    */
-  static getOne(req, res, next) {
+  static async getOne(req, res, next) {
     const id = parseInt(req.params.id, 10);
-    const loan = LoanModel.findById(id);
+    const loan = await LoanModel.findById(id);
     if (!loan) {
       return errorRes(next, 404, 'Loan with this id was not found');
     }
@@ -109,10 +110,10 @@ class Loans {
    * @param {object} res - response
    * @param {function} next
    */
-  static LoanApproval(req, res, next) {
+  static async LoanApproval(req, res, next) {
     const id = parseInt(req.params.id, 10);
     const { status } = req.body;
-    const loanApplication = LoanModel.findById(id);
+    const loanApplication = await LoanModel.findById(id);
     if (!loanApplication) {
       return errorRes(next, 404, 'Loan with this id was not found');
     }
@@ -123,7 +124,7 @@ class Loans {
         'Loan Approval Decision has already been made for this application',
       );
     }
-    const applicationRes = LoanModel.handleApproval(id, status);
+    const applicationRes = await LoanModel.handleApproval(id, status);
     return successRes(res, 200, applicationRes);
   }
 
@@ -134,10 +135,10 @@ class Loans {
    * @param {object} res - response
    * @param {function} next
    */
-  static postLoanRepayment(req, res, next) {
+  static async postLoanRepayment(req, res, next) {
     const loanId = parseInt(req.params.id, 10);
     const paidAmount = parseFloat(req.body.amount);
-    const loanObject = LoanModel.findById(loanId);
+    const loanObject = await LoanModel.findById(loanId);
     if (!loanObject) {
       return errorRes(next, 404, 'Loan with this id was not found');
     }
@@ -152,8 +153,8 @@ class Loans {
       paymentInstallment: monthlyInstallment,
       repaid,
       balance,
-    } = LoanModel.updateBalance(loanId, paidAmount);
-    const { id, createdOn } = RepaymentModel.create(loanId, paidAmount);
+    } = await LoanModel.updateBalance(loanId, paidAmount);
+    const { id, createdOn } = await RepaymentModel.create(loanId, paidAmount);
     const resObj = {
       id,
       loanId,
@@ -173,9 +174,9 @@ class Loans {
    * @param {object} res - response
    * @param {function} next
    */
-  static getLoanRepayment(req, res, next) {
+  static async getLoanRepayment(req, res, next) {
     const loanId = parseInt(req.params.id, 10);
-    const loanRepaymentsArray = RepaymentModel.findByLoanId(loanId);
+    const loanRepaymentsArray = await RepaymentModel.findByLoanId(loanId);
     if (!loanRepaymentsArray.length) {
       return errorRes(next, 404, `Repayments for Loan with ID: ${loanId} not found`);
     }

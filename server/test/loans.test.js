@@ -103,7 +103,7 @@ describe('POST /loans', () => {
     const loanApplication = {
       firstName: 'Tod',
       lastName: 'Mahog',
-      email: 'rdust1b@squidoo.com',
+      email: 'mgreenhough0@noaa.gov',
       amount: 100000,
       tenor: 6,
     };
@@ -116,7 +116,7 @@ describe('POST /loans', () => {
     const loanApplication = {
       firstName: 'Tod',
       lastName: 'Mahog',
-      email: 'djurgen1c@pcworld.com',
+      email: 'bdedam1@bigcartel.com',
       amount: 100000,
       tenor: 6,
     };
@@ -130,6 +130,23 @@ describe('POST /loans', () => {
       firstName: 'Tom',
       lastName: 'huddlestone',
       email: 'tomblack@mandela.com',
+      amount: 100000,
+      tenor: 6,
+    };
+    const res = await request.post('/api/v1/loans').send(loanApplication);
+    res.should.have.status(201);
+    res.body.should.have.property('status').eql(201);
+    res.body.should.be.a('object');
+    res.body.data.should.be.a('object');
+    res.body.data.should.have.property('status').eql('pending');
+    res.body.data.should.have.property('amount').eql(100000);
+    res.body.data.should.have.property('tenor').eql(6);
+  });
+  it('SHOULD submit the form if User has Repaid ALL loans', async () => {
+    const loanApplication = {
+      firstName: 'Candis',
+      lastName: 'Lakeman',
+      email: 'clakeman4@amazonaws.com',
       amount: 100000,
       tenor: 6,
     };
