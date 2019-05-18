@@ -17,6 +17,7 @@ class UserModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -33,6 +34,7 @@ class UserModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -71,6 +73,7 @@ class UserModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -89,6 +92,7 @@ class UserModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -107,6 +111,7 @@ class UserModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
