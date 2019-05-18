@@ -1,6 +1,8 @@
 import { Pool, types } from 'pg';
+import { config } from 'dotenv';
 
-const connectionString = process.env.NODE_ENV === 'test' ? process.env.TESTDB : process.env.DATABASE_URL;
+config();
+const connectionString = process.env.NODE_ENV === 'test' ? process.env.TEST_DB : process.env.DATABASE_URL;
 
 types.setTypeParser(1700, val => parseFloat(val));
 

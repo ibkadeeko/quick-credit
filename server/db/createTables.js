@@ -1,4 +1,4 @@
-import db from '../../db';
+import db from './index';
 
 const createTables = `
   CREATE TABLE IF NOT EXISTS users (
@@ -10,7 +10,7 @@ const createTables = `
     phone VARCHAR(11) NOT NULL UNIQUE,
     status VARCHAR(10) NOT NULL CHECK(status IN ('verified', 'unverified')) DEFAULT 'unverified',
     isAdmin BOOLEAN NOT NULL DEFAULT false,
-    registered TIMESTAMP NOT NULL DEFAULT NOW(),
+    registered DATE NOT NULL DEFAULT CURRENT_DATE,
     PRIMARY KEY (id, email)
   );
 
@@ -26,14 +26,14 @@ const createTables = `
     paymentInstallment NUMERIC NOT NULL,
     balance NUMERIC NOT NULL,
     interest NUMERIC NOT NULL,
-    createdOn TIMESTAMP NOT NULL DEFAULT NOW()
+    createdOn DATE NOT NULL DEFAULT CURRENT_DATE
   );
   
   CREATE TABLE IF NOT EXISTS repayments (
     id SERIAL NOT NULL PRIMARY KEY,
     loanid INT NOT NULL REFERENCES loans(id),
     amount NUMERIC NOT NULL CHECK(amount > 0),
-    createdon TIMESTAMP NOT NULL DEFAULT NOW()
+    createdon DATE NOT NULL DEFAULT CURRENT_DATE
   );
 `;
 
@@ -43,6 +43,4 @@ const createDatabaseTables = async () => {
   });
 };
 
-before(async () => {
-  await createDatabaseTables();
-});
+createDatabaseTables();

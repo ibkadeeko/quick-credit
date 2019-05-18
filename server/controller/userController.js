@@ -16,12 +16,14 @@ class Users {
    * @param {object} res - response
    * @param {function} next
    */
-  static signup(req, res, next) {
+  static async signup(req, res, next) {
     const {
       firstName, lastName, email, password, phone,
     } = req.body;
-    if (UserModel.find(email)) return errorRes(next, 409, 'User with this email already exists');
-    if (UserModel.findPhone(phone)) return errorRes(next, 409, 'User with this Phone Number already exists');
+    const emailAlreadyExists = await UserModel.find(email);
+    if (emailAlreadyExists) return errorRes(next, 409, 'User with this email already exists');
+    const phoneAlreadyExists = await UserModel.findPhone(phone);
+    if (phoneAlreadyExists) return errorRes(next, 409, 'User with this Phone Number already exists');
     const hashedPassword = bcrypt.hashSync(password, 8);
     const newUser = {
       firstName,
@@ -32,7 +34,8 @@ class Users {
       status: 'unverified',
       isAdmin: false,
     };
-    const userObject = UserModel.create(newUser);
+    const userObject = await UserModel.create(newUser);
+    if (!userObject) { return errorRes(next, 500, 'Internal Server Error'); }
     const payload = {
       userId: userObject.id,
       email: userObject.email,
@@ -49,9 +52,9 @@ class Users {
    * @param {object} res - response
    * @param {function} next
    */
-  static login(req, res, next) {
+  static async login(req, res, next) {
     const { email, password } = req.body;
-    const user = UserModel.find(email);
+    const user = await UserModel.find(email);
     if (!user) { return errorRes(next, 404, 'User with this email was not found'); }
     const passwordIsValid = bcrypt.compareSync(password, user.password);
     if (!passwordIsValid) { return errorRes(next, 401, 'email and password do not match'); }
@@ -71,11 +74,11 @@ class Users {
    * @param {object} res - response
    * @param {function} next
    */
-  static verify(req, res, next) {
+  static async verify(req, res, next) {
     const { email } = req.params;
-    const foundUser = UserModel.find(email);
+    const foundUser = await UserModel.find(email);
     if (!foundUser) { return errorRes(next, 404, 'User with this email was not found'); }
-    const user = UserModel.verify(email);
+    const user = await UserModel.verify(email);
     const userObject = keys.reduce((result, key) => ({ ...result, [key]: user[key] }), {});
     return successRes(res, 200, userObject);
   }
@@ -88,7 +91,7 @@ class Users {
    */
   static async resetPassword(req, res, next) {
     const { email } = req.body;
-    const foundUser = UserModel.find(email);
+    const foundUser = await UserModel.find(email);
     if (!foundUser) { return errorRes(next, 404, 'User with this email was not found'); }
     const token = jwt.sign({ email }, process.env.SECRETkey, { expiresIn: '3h' });
     const sent = await resetPasswordEmail(email, token);
@@ -102,15 +105,15 @@ class Users {
    * @param {object} res - response
    * @param {function} next
    */
-  static changePassword(req, res, next) {
+  static async changePassword(req, res, next) {
     const { password } = req.body;
     const { token } = req.query;
     try {
       const { email } = jwt.verify(token, process.env.SECRETkey);
-      const foundUser = UserModel.find(email);
+      const foundUser = await UserModel.find(email);
       if (!foundUser) return errorRes(next, 404, 'User with this email was not found');
       const hashedPassword = bcrypt.hashSync(password, 8);
-      const update = UserModel.changePassword(email, hashedPassword);
+      const update = await UserModel.changePassword(email, hashedPassword);
       return successRes(res, 200, update);
     } catch (error) {
       next(error);

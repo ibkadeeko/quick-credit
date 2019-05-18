@@ -1,5 +1,4 @@
-import usersDb from '../db/users.json';
-import { getDate } from '../utils/helperUtils';
+import db from '../db';
 
 /**
  * Contains the functions that help the User Controller Interact with the database
@@ -8,21 +7,35 @@ class UserModel {
   /**
    * Searches the database to check if a user exists based on the given email
    * @param {string} email - Users Email
-   * @returns {object | undefined} Users data or Undefined if not found
+   * @returns {Promise<object | boolean>} Users data or Undefined if not found
    */
-  static find(email) {
-    const exists = usersDb.find(user => user.email === email);
-    return exists;
+  static async find(email) {
+    try {
+      const { rows } = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      if (rows) {
+        return rows[0];
+      }
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
   }
 
   /**
    * Searches the database to check if a user with a given Phone Number exists
    * @param {number} phone - Users Phone Number
-   * @returns {boolean} true or false
+   * @returns {Promise<object | boolean>} true or false
    */
-  static findPhone(phone) {
-    const exists = usersDb.find(user => user.phone === phone);
-    return !!exists;
+  static async findPhone(phone) {
+    try {
+      const { rows } = await db.query('SELECT * FROM users WHERE phone = $1', [phone]);
+      if (rows) {
+        return rows[0];
+      }
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
   }
 
   /**
@@ -35,49 +48,69 @@ class UserModel {
    * @param {number} params.phone - Users Phone Number
    * @param {string} params.status - Verified or Unverified
    * @param {boolean} params.isAdmin - Is the User an Admin?
-   * @returns {object} Newly created Users data
+   * @returns {Promise<object | boolean>} Newly created Users data
    */
-  static create(params) {
-    const {
-      firstName, lastName, email, password, phone, status, isAdmin,
-    } = params;
-    const date = getDate();
-    const newUser = {
-      id: usersDb.length + 1,
-      firstName,
-      lastName,
-      email,
-      password,
-      phone,
-      status,
-      isAdmin,
-      registered: date,
-    };
-    usersDb.push(newUser);
-    return usersDb[usersDb.length - 1];
+  static async create(params) {
+    try {
+      const {
+        firstName, lastName, email, password, phone, status, isAdmin,
+      } = params;
+      const newUser = [
+        firstName,
+        lastName,
+        email,
+        password,
+        phone,
+        status,
+        isAdmin,
+      ];
+      const queryText = 'INSERT INTO users (firstname, lastname, email, password, phone, status, isAdmin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+      const { rows } = await db.query(queryText, newUser);
+      if (rows) {
+        return rows[0];
+      }
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
   }
 
   /**
    * Verifies a user
    * @param {string} email - Users Email
-   * @returns {object} Verified Users data
+   * @returns {Promise<object>} Verified Users data
    */
-  static verify(email) {
-    const index = usersDb.findIndex(user => user.email === email);
-    usersDb[index].status = 'verified';
-    return usersDb[index];
+  static async verify(email) {
+    try {
+      const value = 'verified';
+      const queryText = 'UPDATE users SET status = $1 WHERE email = $2 RETURNING *';
+      const { rows } = await db.query(queryText, [value, email]);
+      if (rows) {
+        return rows[0];
+      }
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
   }
 
   /**
    * Change a users Password
    * @param {string} email - Users Email
    * @param {string} password - Users new Password
-   * @returns {object} Users data
+   * @returns {Promise<object>} Users data
    */
-  static changePassword(email, password) {
-    const index = usersDb.findIndex(user => user.email === email);
-    usersDb[index].password = password;
-    return usersDb[index];
+  static async changePassword(email, password) {
+    try {
+      const queryText = 'UPDATE users SET password = $1 WHERE email = $2 RETURNING *';
+      const { rows } = await db.query(queryText, [password, email]);
+      if (rows) {
+        return rows[0];
+      }
+    } catch (error) {
+      console.error(error.message);
+      return false;
+    }
   }
 }
 
