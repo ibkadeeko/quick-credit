@@ -79,7 +79,7 @@ class LoanModel {
         queryText = `
         INSERT INTO loans (firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest) 
         VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
-        ON CONFLICT ON CONSTRAINT loans_pkey DO UPDATE 
+        ON CONFLICT (id) DO UPDATE 
         SET (id, firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest, createdon) = (${newID}, EXCLUDED.firstname, EXCLUDED.lastname, EXCLUDED.email, EXCLUDED.amount, EXCLUDED.tenor, EXCLUDED.status, EXCLUDED.repaid, EXCLUDED.paymentinstallment, EXCLUDED.balance, EXCLUDED.interest, EXCLUDED.createdon) RETURNING *`;
       } else {
         queryText = 'INSERT INTO loans (firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
