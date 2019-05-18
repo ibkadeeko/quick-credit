@@ -1,4 +1,3 @@
-import { getDate } from '../utils/helperUtils';
 import db from '../db';
 
 /**
@@ -56,7 +55,6 @@ class UserModel {
       const {
         firstName, lastName, email, password, phone, status, isAdmin,
       } = params;
-      const registered = getDate();
       const newUser = [
         firstName,
         lastName,
@@ -65,9 +63,8 @@ class UserModel {
         phone,
         status,
         isAdmin,
-        registered,
       ];
-      const queryText = 'INSERT INTO users (firstname, lastname, email, password, phone, status, isAdmin, registered) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
+      const queryText = 'INSERT INTO users (firstname, lastname, email, password, phone, status, isAdmin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
       const { rows } = await db.query(queryText, newUser);
       if (rows) {
         return rows[0];
