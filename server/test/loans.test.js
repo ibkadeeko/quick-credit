@@ -142,7 +142,7 @@ describe('POST /loans', () => {
     res.body.data.should.have.property('amount').eql(100000);
     res.body.data.should.have.property('tenor').eql(6);
   });
-  it('SHOULD submit the form IF User has Repaid ALL loans', async () => {
+  it('SHOULD submit the form if User has Repaid ALL loans', async () => {
     const loanApplication = {
       firstName: 'Candis',
       lastName: 'Lakeman',

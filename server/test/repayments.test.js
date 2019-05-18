@@ -22,7 +22,7 @@ describe('POST /loans/:id/repayment', () => {
     res.body.should.have.property('status').eql(400);
   });
   it('Should not make Payment if amount is invalid', async () => {
-    const id = 7;
+    const id = 4;
     const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: '234ed$' });
     res.should.have.status(400);
     res.body.should.be.a('object');
@@ -30,7 +30,7 @@ describe('POST /loans/:id/repayment', () => {
     res.body.should.have.property('status').eql(400);
   });
   it('It should not Make Payment if Loan is not approved', async () => {
-    const id = 11;
+    const id = 7;
     const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 });
     res.should.have.status(400);
     res.body.should.be.a('object');
@@ -38,7 +38,7 @@ describe('POST /loans/:id/repayment', () => {
     res.body.should.have.property('status').eql(400);
   });
   it('should not make payment if loan has been fully repaid', async () => {
-    const id = 8;
+    const id = 5;
     const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 });
     res.should.have.status(400);
     res.body.should.be.a('object');
@@ -54,7 +54,7 @@ describe('POST /loans/:id/repayment', () => {
     res.body.should.have.property('status').eql(404);
   });
   it('should make Payment if all checks are passed', async () => {
-    const id = 10;
+    const id = 6;
     const amount = 2724.39;
     const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount });
     res.should.have.status(200);
@@ -65,7 +65,7 @@ describe('POST /loans/:id/repayment', () => {
     res.body.data.should.have.property('balance');
   });
   it('should make Payments and change repaid to true when Loan payment is complete', async () => {
-    const id = 16;
+    const id = 8;
     const amount = 155042;
     const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount });
     res.should.have.status(200);
@@ -94,7 +94,7 @@ describe('GET /loans/:id/repayments', () => {
     res.body.should.have.property('status').eql(404);
   });
   it('Should return list of repayments', async () => {
-    const id = 10;
+    const id = 6;
     const res = await request.get(`/api/v1/loans/${id}/repayments`);
     res.should.have.status(200);
     res.body.should.have.property('data');

@@ -71,18 +71,7 @@ class LoanModel {
         balance,
         interest,
       ];
-      const result = await db.query('SELECT MAX(id) FROM loans');
-      const { max } = result.rows[0];
-      const newID = parseInt(max, 10) + 1;
-      let queryText;
-      if (max) {
-        queryText = `
-        INSERT INTO loans (firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
-        ON CONFLICT (id) DO UPDATE 
-        SET (id, firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest, createdon) = (${newID}, EXCLUDED.firstname, EXCLUDED.lastname, EXCLUDED.email, EXCLUDED.amount, EXCLUDED.tenor, EXCLUDED.status, EXCLUDED.repaid, EXCLUDED.paymentinstallment, EXCLUDED.balance, EXCLUDED.interest, EXCLUDED.createdon) RETURNING *`;
-      } else {
-        queryText = 'INSERT INTO loans (firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
-      }
+      const queryText = 'INSERT INTO loans (firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
       const { rows } = await db.query(queryText, newLoan);
       if (rows) {
         return rows[0];
