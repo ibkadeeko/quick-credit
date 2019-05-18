@@ -8,41 +8,34 @@ import UserModel from '../models/userModel';
 chai.use(chaiHttp);
 chai.should();
 
+let request;
+beforeEach(() => {
+  request = chai.request(app);
+});
+
 describe('PATCH /users/:email/verify', () => {
-  it('It SHOULD NOT work if email is invalid', (done) => {
+  it('It SHOULD NOT work if email is invalid', async () => {
     const email = '1xae4rg2';
-    chai.request(app)
-      .patch(`/api/v1/users/${email}/verify`)
-      .end((err, res) => {
-        res.should.have.status(400);
-        res.body.should.have.property('error');
-        res.body.should.have.property('status').eql(400);
-        done(err);
-      });
+    const res = await request.patch(`/api/v1/users/${email}/verify`);
+    res.should.have.status(400);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(400);
   });
-  it('should NOT UPDATE if user email is not in the database', (done) => {
+  it('should NOT UPDATE if user email is not in the database', async () => {
     const email = 'mikemikemike@yahoo.com';
-    chai.request(app)
-      .patch(`/api/v1/users/${email}/verify`)
-      .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.be.a('object');
-        res.body.should.have.property('error');
-        res.body.should.have.property('status').eql(404);
-        done(err);
-      });
+    const res = await request.patch(`/api/v1/users/${email}/verify`);
+    res.should.have.status(404);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(404);
   });
-  it('SHOULD VERIFY the user', (done) => {
+  it('SHOULD VERIFY the user', async () => {
     const email = 'tomblack@mandela.com';
-    chai.request(app)
-      .patch(`/api/v1/users/${email}/verify`)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.data.should.be.a('object');
-        res.body.data.should.have.property('status').eql('verified');
-        res.body.data.should.have.property('email').eql(email);
-        done(err);
-      });
+    const res = await request.patch(`/api/v1/users/${email}/verify`);
+    res.should.have.status(200);
+    res.body.data.should.be.a('object');
+    res.body.data.should.have.property('status').eql('verified');
+    res.body.data.should.have.property('email').eql(email);
   });
 });
 
