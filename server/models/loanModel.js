@@ -88,7 +88,7 @@ class LoanModel {
         return rows[0];
       }
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       return false;
     }
   }
