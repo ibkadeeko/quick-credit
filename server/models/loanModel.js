@@ -16,6 +16,7 @@ class LoanModel {
         return rows;
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -32,6 +33,7 @@ class LoanModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -87,6 +89,7 @@ class LoanModel {
         return rows[0];
       }
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
@@ -139,6 +142,7 @@ class LoanModel {
       const { rows } = await db.query(updateQuery, [newBalance, id]);
       return rows[0];
     } catch (error) {
+      console.error(error.message);
       return false;
     }
   }
