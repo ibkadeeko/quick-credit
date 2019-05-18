@@ -10,7 +10,7 @@ const createTables = `
     phone VARCHAR(11) NOT NULL UNIQUE,
     status VARCHAR(10) NOT NULL CHECK(status IN ('verified', 'unverified')) DEFAULT 'unverified',
     isAdmin BOOLEAN NOT NULL DEFAULT false,
-    registered DATE NOT NULL DEFAULT CURRENT_DATE,
+    registered TIMESTAMP NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id, email)
   );
 
@@ -26,14 +26,14 @@ const createTables = `
     paymentInstallment NUMERIC NOT NULL,
     balance NUMERIC NOT NULL,
     interest NUMERIC NOT NULL,
-    createdOn DATE NOT NULL DEFAULT CURRENT_DATE
+    createdOn TIMESTAMP NOT NULL DEFAULT NOW()
   );
   
   CREATE TABLE IF NOT EXISTS repayments (
     id SERIAL NOT NULL PRIMARY KEY,
     loanid INT NOT NULL REFERENCES loans(id),
     amount NUMERIC NOT NULL CHECK(amount > 0),
-    createdon DATE NOT NULL DEFAULT CURRENT_DATE
+    createdOn TIMESTAMP NOT NULL DEFAULT NOW()
   );
 `;
 

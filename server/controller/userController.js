@@ -4,7 +4,7 @@ import { errorRes, successRes } from '../utils/responseHandler';
 import resetPasswordEmail from '../utils/email';
 import UserModel from '../models/userModel';
 
-const keys = ['id', 'firstName', 'lastName', 'email', 'phone', 'status', 'registered'];
+const keys = ['id', 'firstname', 'lastname', 'email', 'phone', 'status', 'registered'];
 
 /**
  * Contains all the user route methods

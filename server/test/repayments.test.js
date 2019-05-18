@@ -99,7 +99,7 @@ describe('GET /loans/:id/repayments', () => {
     res.should.have.status(200);
     res.body.should.have.property('data');
     res.body.data.should.be.a('array');
-    res.body.data[0].should.have.property('loanId').eql(id);
+    res.body.data[0].should.have.property('loanid').eql(id);
     res.body.data[0].should.have.property('amount');
   });
 });
