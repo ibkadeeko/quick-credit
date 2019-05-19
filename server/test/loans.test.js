@@ -12,7 +12,32 @@ beforeEach(() => {
   request = chai.request(app);
 });
 
+const adminDetails = {
+  email: 'admin@quickcredit.com',
+  password: 'password',
+};
+
+const userDetails = {
+  email: 'tomblack@mandela.com',
+  password: '123456',
+};
+
+let userToken;
+let adminToken;
+
+const malformedToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEsImVtYWlsIjoicG9saXRpY29hZG1pbkBwb2xpdGljby5jb20iLCJpc2FkbWluIjp0cnVlLCJpYXQiOjE1NTA3NjM4MjksImV4cCI6MTU1MDc4NTQyOX0.Ta3DQLDQxn-59WDZETWpBawcFsvfBzNa74PMF40_mWg';
+
 describe('POST /loans', () => {
+  before(async () => {
+    try {
+      const response = await chai.request(app).post('/api/v1/auth/login').send(userDetails);
+      const res = await chai.request(app).post('/api/v1/auth/login').send(adminDetails);
+      userToken = response.body.data.token;
+      adminToken = res.body.data.token;
+    } catch (error) {
+      console.error('Before Each Error msg:', error.message);
+    }
+  });
   it('SHOULD NOT submit the loan Form if firstName is omitted', async () => {
     const loanApplication = {
       lastName: 'wagner',
@@ -107,7 +132,7 @@ describe('POST /loans', () => {
       amount: 100000,
       tenor: 6,
     };
-    const res = await request.post('/api/v1/loans').send(loanApplication);
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${userToken}`);
     res.should.have.status(409);
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(409);
@@ -120,10 +145,36 @@ describe('POST /loans', () => {
       amount: 100000,
       tenor: 6,
     };
-    const res = await request.post('/api/v1/loans').send(loanApplication);
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${userToken}`);
     res.should.have.status(409);
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(409);
+  });
+  it('SHOULD NOT submit the form without a token', async () => {
+    const loanApplication = {
+      firstName: 'Tom',
+      lastName: 'huddlestone',
+      email: 'tomblack@mandela.com',
+      amount: 100000,
+      tenor: 6,
+    };
+    const res = await request.post('/api/v1/loans').send(loanApplication);
+    res.should.have.status(403);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(403);
+  });
+  it('SHOULD NOT submit the form if Token is malformed', async () => {
+    const loanApplication = {
+      firstName: 'Tom',
+      lastName: 'huddlestone',
+      email: 'tomblack@mandela.com',
+      amount: 100000,
+      tenor: 6,
+    };
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${malformedToken}`);
+    res.should.have.status(500);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(500);
   });
   it('SHOULD submit the form', async () => {
     const loanApplication = {
@@ -133,7 +184,7 @@ describe('POST /loans', () => {
       amount: 100000,
       tenor: 6,
     };
-    const res = await request.post('/api/v1/loans').send(loanApplication);
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `Bearer ${userToken}`);
     res.should.have.status(201);
     res.body.should.have.property('status').eql(201);
     res.body.should.be.a('object');
@@ -150,7 +201,7 @@ describe('POST /loans', () => {
       amount: 100000,
       tenor: 6,
     };
-    const res = await request.post('/api/v1/loans').send(loanApplication);
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${userToken}`);
     res.should.have.status(201);
     res.body.should.have.property('status').eql(201);
     res.body.should.be.a('object');

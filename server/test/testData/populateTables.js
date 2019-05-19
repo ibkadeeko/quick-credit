@@ -1,4 +1,19 @@
+import bcrypt from 'bcryptjs';
 import db from '../../db';
+
+const password = bcrypt.hashSync('password', 8);
+
+const values = [
+  'admin',
+  'admin',
+  'admin@quickcredit.com',
+  password,
+  '08003000200',
+  'verified',
+  true,
+];
+const queryText = 'INSERT INTO users (firstname, lastname, email, password, phone, status, isAdmin) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+
 
 const populate = `
   INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Mariquilla', 'Greenhough', 'mgreenhough0@noaa.gov', 'ar0Qcw5gT', 08012223340, 'unverified', false, default);
@@ -9,7 +24,7 @@ const populate = `
   INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Karalynn', 'Arlott', 'karlott5@scientificamerican.com',  'advervcYY', 08012223345, 'unverified', false, default);
   INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Britney', 'Spillett', 'bspillett6@japanpost.jp', 'b4WHNczDd4l', 08012223346, 'unverified', false, default);
   INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Hervey', 'Jorioz', 'hjorioz7@bravesites.com', 'SdyaRDF99e', 08012223347, 'verified', true, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Theresa', 'Groucutt', 'tgroucutt8@bbb.org', 'XTvuFao',  08012223348, 'unverified', true, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Theresa', 'Groucutt', 'tgroucutt8@bbb.org', 'XTvuFao', 08012223348, 'unverified', true, default);
   INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Isa', 'Scuse', 'iscuse9@tamu.edu', 'gnpL3v', 08012223349, 'unverified', false, default);
 
   INSERT INTO loans (id, firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest, createdon) VALUES  (default, 'Mariquilla', 'Greenhough', 'mgreenhough0@noaa.gov', 104000, 3, 'pending', false, 35246.04, 105738.12, 1738.12, default);
@@ -26,6 +41,9 @@ const seedDatabase = async () => {
   await db.query(populate).then(() => {
     console.log('Tables populated successfully');
   });
+  await db.query(queryText, values).then(() => {
+    console.log('Admin Successfully Created');
+  })
 };
 
 before(async () => {
