@@ -214,7 +214,7 @@ describe('POST /loans', () => {
 
 describe('GET /loans', () => {
   it('SHOULD return a list of all Loans', async () => {
-    const res = await request.get('/api/v1/loans');
+    const res = await request.get('/api/v1/loans').set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.should.have.property('status').eql(200);
     res.body.should.be.a('object');
@@ -224,7 +224,7 @@ describe('GET /loans', () => {
     res.body.data[0].should.have.property('interest');
   });
   it('SHOULD return a list of all REPAID loans', async () => {
-    const res = await request.get('/api/v1/loans?status=approved&repaid=true');
+    const res = await request.get('/api/v1/loans?status=approved&repaid=true').set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.should.have.property('status').eql(200);
     res.body.should.be.a('object');
@@ -233,7 +233,7 @@ describe('GET /loans', () => {
     res.body.data[0].should.have.property('repaid').eql(true);
   });
   it('SHOULD return a list of all UNREPAID loans', async () => {
-    const res = await request.get('/api/v1/loans?status=approved&repaid=false');
+    const res = await request.get('/api/v1/loans?status=approved&repaid=false').set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.should.have.property('status').eql(200);
     res.body.should.be.a('object');
@@ -248,10 +248,28 @@ describe('GET /loans', () => {
     res.body.should.have.property('status').eql(400);
   });
   it('SHOULD NOT return a List of Loans', async () => {
-    const res = await request.get('/api/v1/loans?home=something');
+    const res = await request.get('/api/v1/loans?home=something').set('authorization', `Bearer ${adminToken}`);
     res.should.have.status(400);
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(400);
+  });
+  it('SHOULD NOT return a List of Loans if No Token is Provided', async () => {
+    const res = await request.get('/api/v1/loans');
+    res.should.have.status(401);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(401);
+  });
+  it('SHOULD NOT return a List of Loans if Token is Invalid', async () => {
+    const res = await request.get('/api/v1/loans').set('authorization', `${malformedToken}`);
+    res.should.have.status(401);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(401);
+  });
+  it('SHOULD NOT return a List of Loans if user is unauthorized', async () => {
+    const res = await request.get('/api/v1/loans').set('authorization', `${userToken}`);
+    res.should.have.status(403);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(403);
   });
 });
 

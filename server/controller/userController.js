@@ -39,7 +39,7 @@ class Users {
     const payload = {
       userId: userObject.id,
       email: userObject.email,
-      isAdmin: userObject.isAdmin,
+      isAdmin: userObject.isadmin,
     };
     const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
     const user = keys.reduce((result, key) => ({ ...result, [key]: userObject[key] }), {});
@@ -61,7 +61,7 @@ class Users {
     const payload = {
       userId: user.id,
       email: user.email,
-      isAdmin: user.isAdmin,
+      isAdmin: user.isadmin,
     };
     const token = jwt.sign(payload, process.env.SECRETkey, { expiresIn: 21600 });
     const userObject = keys.reduce((result, key) => ({ ...result, [key]: user[key] }), {});
