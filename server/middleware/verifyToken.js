@@ -1,8 +1,5 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import { errorRes } from '../utils/responseHandler';
-
-dotenv.config();
 
 /**
  * Class that contains the Token Verification methods
@@ -16,7 +13,7 @@ class Verify {
    */
   static userAccess(req, res, next) {
     let token = req.headers['x-access-token'] || req.headers.authorization;
-    if (!token) return errorRes(next, 403, 'No token Provided');
+    if (!token) return errorRes(next, 401, 'No token Provided');
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
@@ -26,7 +23,7 @@ class Verify {
       res.locals.email = email;
       next();
     } catch (error) {
-      return errorRes(next, 500, error.message);
+      return errorRes(next, 401, 'Invalid Token Provided');
     }
   }
 
@@ -38,7 +35,7 @@ class Verify {
    */
   static adminAccess(req, res, next) {
     let token = req.headers['x-access-token'] || req.headers.authorization;
-    if (!token) return errorRes(next, 403, 'No token Provided');
+    if (!token) return errorRes(next, 401, 'No token Provided');
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
@@ -49,7 +46,7 @@ class Verify {
       res.locals.email = email;
       next();
     } catch (error) {
-      return errorRes(next, 500, error.message);
+      return errorRes(next, 401, 'Invalid Token Provided');
     }
   }
 }

@@ -159,9 +159,9 @@ describe('POST /loans', () => {
       tenor: 6,
     };
     const res = await request.post('/api/v1/loans').send(loanApplication);
-    res.should.have.status(403);
+    res.should.have.status(401);
     res.body.should.have.property('error');
-    res.body.should.have.property('status').eql(403);
+    res.body.should.have.property('status').eql(401);
   });
   it('SHOULD NOT submit the form if Token is malformed', async () => {
     const loanApplication = {
@@ -172,9 +172,9 @@ describe('POST /loans', () => {
       tenor: 6,
     };
     const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${malformedToken}`);
-    res.should.have.status(500);
+    res.should.have.status(401);
     res.body.should.have.property('error');
-    res.body.should.have.property('status').eql(500);
+    res.body.should.have.property('status').eql(401);
   });
   it('SHOULD submit the form', async () => {
     const loanApplication = {
