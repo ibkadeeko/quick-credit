@@ -283,7 +283,7 @@ describe('Get /loans/:id', () => {
   });
   it('should NOT LIST a single Loan if ID is not in database', async () => {
     const id = 999;
-    const res = await request.get(`/api/v1/loans/${id}`);
+    const res = await request.get(`/api/v1/loans/${id}`).set('authorization', `${userToken}`);
     res.should.have.status(404);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -291,7 +291,7 @@ describe('Get /loans/:id', () => {
   });
   it('should LIST a SINGLE Loan', async () => {
     const id = 1;
-    const res = await request.get(`/api/v1/loans/${id}`);
+    const res = await request.get(`/api/v1/loans/${id}`).set('authorization', `${userToken}`);
     res.should.have.status(200);
     res.body.data.should.be.a('object');
     res.body.data.should.have.property('id');
@@ -312,7 +312,7 @@ describe('PATCH /loans/:id', () => {
   });
   it('should NOT UPDATE if ID is not in the database', async () => {
     const id = 999;
-    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' });
+    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' }).set('authorization', `${adminToken}`);
     res.should.have.status(404);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -328,7 +328,7 @@ describe('PATCH /loans/:id', () => {
   });
   it('SHOULD UPDATE the Loan Application', async () => {
     const id = 1;
-    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' });
+    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' }).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.data.should.be.a('object');
     res.body.data.should.have.property('id').eql(id);
@@ -336,7 +336,7 @@ describe('PATCH /loans/:id', () => {
   });
   it('SHOULD UPDATE the Loan Application', async () => {
     const id = 3;
-    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'rejected' });
+    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'rejected' }).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.data.should.be.a('object');
     res.body.data.should.have.property('id').eql(id);
@@ -344,7 +344,7 @@ describe('PATCH /loans/:id', () => {
   });
   it('should NOT update if previous loan Application has been taken', async () => {
     const id = 3;
-    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' });
+    const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' }).set('authorization', `${adminToken}`);
     res.should.have.status(400);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
