@@ -228,7 +228,7 @@ describe('POST /resetpassword', () => {
     res.body.should.be.a('object');
     res.body.should.have.property('error');
   });
-  it('Should not reset password', async () => {
+  it('Should reset password', async () => {
     const res = await request.post(`/api/v1/auth/resetpassword?token=${token}`).send({ password: '123456' });
     res.should.have.status(200);
     res.body.should.have.property('status').eql(200);
