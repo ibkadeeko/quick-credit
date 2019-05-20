@@ -6,7 +6,7 @@ import Verify from '../middleware/verifyToken';
 const loanRoutes = Router();
 
 loanRoutes.post('/', Validate.loanApplication, Verify.userAccess, Loans.create);
-loanRoutes.get('/', Validate.getRequest, Loans.getAll);
+loanRoutes.get('/', Validate.getRequest, Verify.adminAccess, Loans.getAll);
 loanRoutes.get('/:id', Validate.id, Loans.getOne);
 loanRoutes.patch('/:id', Validate.loanApproval, Loans.LoanApproval);
 
