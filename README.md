@@ -59,6 +59,9 @@ You can see a hosted version of the template at [https://ibkadeeko.github.io/qui
 
 The API is currently in version 1 (v1) and is hosted at [https://ibk-quick-credit.herokuapp.com/](https://ibk-quick-credit.herokuapp.com/)
 
+## API Documentation
+
+The API Documentation is currently hosted at [https://ibk-quick-credit.herokuapp.com/api/v1/docs](https://ibk-quick-credit.herokuapp.com/api/v1/docs)
 
 ## Author
 

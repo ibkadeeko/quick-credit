@@ -1,0 +1,899 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Quick Credit
+  description: Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.
+  contact:
+    email: ibukunadeeko@gmail.com
+host: ibk-quick-credit.herokuapp.com
+basePath: /api/v1
+securityDefinitions: {}
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /auth/signup:
+    post:
+      description: Creates a new User and returns the new users object
+      summary: User Sign Up
+      tags:
+      - Auth
+      operationId: AuthSignupPost
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
+      - name: firstName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: lastName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: phone
+        in: formData
+        required: true
+        type: integer
+        format: int64
+        description: ''
+      responses:
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccesfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: 201
+              data:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
+                user:
+                  id: 14
+                  firstname: mike
+                  lastname: brown
+                  email: mikebrown@email.com
+                  phone: 18001119988
+                  status: unverified
+                  registered: 2019-05-21T00:00:00Z
+                message: User successfully created
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 446
+            Etag:
+              type: string
+              default: W/"1be-UO07Ew/a6rUTsqiIok6nwgXxuuM"
+            Date:
+              type: string
+              default: Tue, 21 May 2019 15:49:37 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        409:
+          description: Conflict
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: 409
+              error: User with this email already exists
+  /auth/login:
+    post:
+      description: >-
+        Login Route
+
+
+        Body Parameters needed are:
+
+        - Email
+
+        - Password
+      summary: User Login
+      tags:
+      - Auth
+      operationId: AuthLoginPost
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccessfulResponse1'
+          examples:
+            application/json; charset=utf-8:
+              status: 200
+              data:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzODc3LCJleHAiOjE1NTg0NzU0Nzd9.UHOEGRia69KZNS4G09UpYCTAiitw3hjYxDqPjVwZjEs
+                user:
+                  id: 14
+                  firstname: mike
+                  lastname: brown
+                  email: mikebrown@email.com
+                  phone: 18001119988
+                  status: unverified
+                  registered: 2019-05-21T00:00:00Z
+                message: User logIn successful
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 442
+            Etag:
+              type: string
+              default: W/"1ba-ee9HXg1ZxjJFXMyYnpbRLqMrfr4"
+            Date:
+              type: string
+              default: Tue, 21 May 2019 15:51:17 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: 401
+              error: email and password do not match
+  /loans:
+    post:
+      description: Creates a Loan Application and returns an object of the Loan Application
+      summary: Loan Application
+      tags:
+      - Loans
+      operationId: LoansPost
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: firstName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: lastName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: amount
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: tenor
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccessfulResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: 201
+              data:
+                id: 11
+                firstname: mike
+                lastname: brown
+                email: mikebrown@email.com
+                amount: 100000
+                tenor: 6
+                status: pending
+                paymentinstallment: 17156.139999999999
+                balance: 102936.84
+                interest: 2936.8400000000001
+                createdon: 2019-05-21T00:00:00Z
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 252
+            Etag:
+              type: string
+              default: W/"fc-cXU0HbokUBlqZDTbbtmMUB99KFc"
+            Date:
+              type: string
+              default: Tue, 21 May 2019 15:54:25 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: 400
+              error: Amount is required
+    get:
+      description: It retrieves all the loans from the database
+      summary: Get all Loans
+      tags:
+      - Loans
+      operationId: LoansGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /loans/10:
+    get:
+      description: it retireves a specific loan from the databse based on its ID
+      summary: Get a Specific Loan
+      tags:
+      - Loans
+      operationId: Loans10Get
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /loans/3:
+    patch:
+      description: "The parameter neede in the body is the status. \nstatus should be set to either approved or rejected"
+      summary: Approve or Reject Loan Application
+      tags:
+      - Loans
+      operationId: Loans3Patch
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
+      - name: status
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+          examples:
+            application/json; charset=utf-8:
+              status: 200
+              data:
+                id: 3
+                firstname: Mariquilla
+                lastname: Greenhough
+                email: mgreenhough0@noaa.gov
+                amount: 104000
+                tenor: 3
+                status: approved
+                repaid: false
+                paymentinstallment: 35246.040000000001
+                balance: 105738.12
+                interest: 1738.1199999999999
+                createdon: 2019-05-21T00:00:00Z
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 280
+            Etag:
+              type: string
+              default: W/"118-PiiiM0qHtzpVXWBbUAfa0J9jCjA"
+            Date:
+              type: string
+              default: Tue, 21 May 2019 15:56:54 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequest'
+          examples:
+            application/json:
+              status: 400
+              error: Loan Approval Decision has already been made for this application
+  /users/{email}/verify:
+    patch:
+      description: Only a valid email is required in the reauest Url
+      summary: Verify User
+      tags:
+      - Users
+      operationId: UsersVerifyByEmailPatch
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: email
+        in: path
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccessfulResponse2'
+          examples:
+            application/json; charset=utf-8:
+              status: 200
+              data:
+                id: 14
+                firstname: mike
+                lastname: brown
+                email: mikebrown@email.com
+                phone: 18001119988
+                status: verified
+                registered: 2019-05-21T00:00:00Z
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 181
+            Etag:
+              type: string
+              default: W/"b5-YzBzIt5BYBDzkkvk+JWWWBO1SZs"
+            Date:
+              type: string
+              default: Tue, 21 May 2019 15:53:18 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
+  /loans/2/repayment:
+    post:
+      description: Repayment amount is the parameter needed in the body and loan ID in the URL
+      summary: Post Loan repayment
+      tags:
+      - Repayments
+      operationId: Loans2RepaymentPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
+      - name: amount
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /loans/2/repayments:
+    get:
+      description: "The loan repayments of a loan is retrieved using its ID.\nThe id is included as a parameter in the request parameter "
+      summary: Retrieve Loan Repayments
+      tags:
+      - Repayments
+      operationId: Loans2RepaymentsGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        default: application/x-www-form-urlencoded
+      responses:
+        200:
+          description: ''
+          headers: {}
+definitions:
+  SuccessfulResponse:
+    title: SuccessfulResponse
+    example:
+      status: 201
+      data:
+        id: 11
+        firstname: mike
+        lastname: brown
+        email: mikebrown@email.com
+        amount: 100000
+        tenor: 6
+        status: pending
+        paymentinstallment: 17156.139999999999
+        balance: 102936.84
+        interest: 2936.8400000000001
+        createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data'
+    required:
+    - status
+    - data
+  Data:
+    title: Data
+    example:
+      id: 11
+      firstname: mike
+      lastname: brown
+      email: mikebrown@email.com
+      amount: 100000
+      tenor: 6
+      status: pending
+      paymentinstallment: 17156.139999999999
+      balance: 102936.84
+      interest: 2936.8400000000001
+      createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      tenor:
+        type: integer
+        format: int32
+      status:
+        type: string
+      paymentinstallment:
+        type: number
+        format: double
+      balance:
+        type: number
+        format: double
+      interest:
+        type: number
+        format: double
+      createdon:
+        type: string
+    required:
+    - id
+    - firstname
+    - lastname
+    - email
+    - amount
+    - tenor
+    - status
+    - paymentinstallment
+    - balance
+    - interest
+    - createdon
+  BadRequest:
+    title: BadRequest
+    example:
+      status: 400
+      error: Amount is required
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      error:
+        type: string
+    required:
+    - status
+    - error
+  SuccessResponse:
+    title: SuccessResponse
+    example:
+      status: 200
+      data:
+        id: 3
+        firstname: Mariquilla
+        lastname: Greenhough
+        email: mgreenhough0@noaa.gov
+        amount: 104000
+        tenor: 3
+        status: approved
+        repaid: false
+        paymentinstallment: 35246.040000000001
+        balance: 105738.12
+        interest: 1738.1199999999999
+        createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data1'
+    required:
+    - status
+    - data
+  Data1:
+    title: Data1
+    example:
+      id: 3
+      firstname: Mariquilla
+      lastname: Greenhough
+      email: mgreenhough0@noaa.gov
+      amount: 104000
+      tenor: 3
+      status: approved
+      repaid: false
+      paymentinstallment: 35246.040000000001
+      balance: 105738.12
+      interest: 1738.1199999999999
+      createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      tenor:
+        type: integer
+        format: int32
+      status:
+        type: string
+      repaid:
+        type: boolean
+      paymentinstallment:
+        type: number
+        format: double
+      balance:
+        type: number
+        format: double
+      interest:
+        type: number
+        format: double
+      createdon:
+        type: string
+    required:
+    - id
+    - firstname
+    - lastname
+    - email
+    - amount
+    - tenor
+    - status
+    - repaid
+    - paymentinstallment
+    - balance
+    - interest
+    - createdon
+  SuccesfulResponse:
+    title: SuccesfulResponse
+    example:
+      status: 201
+      data:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
+        user:
+          id: 14
+          firstname: mike
+          lastname: brown
+          email: mikebrown@email.com
+          phone: 18001119988
+          status: unverified
+          registered: 2019-05-21T00:00:00Z
+        message: User successfully created
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data2'
+    required:
+    - status
+    - data
+  Data2:
+    title: Data2
+    example:
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
+      user:
+        id: 14
+        firstname: mike
+        lastname: brown
+        email: mikebrown@email.com
+        phone: 18001119988
+        status: unverified
+        registered: 2019-05-21T00:00:00Z
+      message: User successfully created
+    type: object
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/User'
+      message:
+        type: string
+    required:
+    - token
+    - user
+    - message
+  User:
+    title: User
+    example:
+      id: 14
+      firstname: mike
+      lastname: brown
+      email: mikebrown@email.com
+      phone: 18001119988
+      status: unverified
+      registered: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      status:
+        type: string
+      registered:
+        type: string
+    required:
+    - id
+    - firstname
+    - lastname
+    - email
+    - phone
+    - status
+    - registered
+  SuccessfulResponse1:
+    title: SuccessfulResponse1
+    example:
+      status: 200
+      data:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzODc3LCJleHAiOjE1NTg0NzU0Nzd9.UHOEGRia69KZNS4G09UpYCTAiitw3hjYxDqPjVwZjEs
+        user:
+          id: 14
+          firstname: mike
+          lastname: brown
+          email: mikebrown@email.com
+          phone: 18001119988
+          status: unverified
+          registered: 2019-05-21T00:00:00Z
+        message: User logIn successful
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data2'
+    required:
+    - status
+    - data
+  SuccessfulResponse2:
+    title: SuccessfulResponse2
+    example:
+      status: 200
+      data:
+        id: 14
+        firstname: mike
+        lastname: brown
+        email: mikebrown@email.com
+        phone: 18001119988
+        status: verified
+        registered: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data4'
+    required:
+    - status
+    - data
+  Data4:
+    title: Data4
+    example:
+      id: 14
+      firstname: mike
+      lastname: brown
+      email: mikebrown@email.com
+      phone: 18001119988
+      status: verified
+      registered: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      status:
+        type: string
+      registered:
+        type: string
+    required:
+    - id
+    - firstname
+    - lastname
+    - email
+    - phone
+    - status
+    - registered
+tags:
+- name: Loans
+  description: Contains all the Loan Requests
+- name: Users
+  description: Contains all the user requests
+- name: Repayments
+  description: Contains all the repayment requests
