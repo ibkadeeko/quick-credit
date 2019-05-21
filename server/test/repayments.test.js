@@ -12,10 +12,34 @@ beforeEach(() => {
   request = chai.request(app);
 });
 
+
+const adminDetails = {
+  email: 'admin@quickcredit.com',
+  password: 'password',
+};
+
+const userDetails = {
+  email: 'tomblack@mandela.com',
+  password: '123456',
+};
+
+let userToken;
+let adminToken;
+
 describe('POST /loans/:id/repayment', () => {
+  before(async () => {
+    try {
+      const response = await chai.request(app).post('/api/v1/auth/login').send(userDetails);
+      const res = await chai.request(app).post('/api/v1/auth/login').send(adminDetails);
+      userToken = response.body.data.token;
+      adminToken = res.body.data.token;
+    } catch (error) {
+      console.error('Before Each Error msg:', error.message);
+    }
+  });
   it('should not make payment if ID is invalid', async () => {
     const id = 'abc';
-    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 10000 });
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 10000 }).set('authorization', `${adminToken}`);
     res.should.have.status(400);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -31,7 +55,7 @@ describe('POST /loans/:id/repayment', () => {
   });
   it('It should not Make Payment if Loan is not approved', async () => {
     const id = 7;
-    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 });
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 }).set('authorization', `${adminToken}`);
     res.should.have.status(400);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -39,7 +63,7 @@ describe('POST /loans/:id/repayment', () => {
   });
   it('should not make payment if loan has been fully repaid', async () => {
     const id = 5;
-    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 });
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 }).set('authorization', `${adminToken}`);
     res.should.have.status(400);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -47,7 +71,7 @@ describe('POST /loans/:id/repayment', () => {
   });
   it('should not make payment if Loan with given ID does not exist', async () => {
     const id = 999;
-    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 });
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount: 40000 }).set('authorization', `${adminToken}`);
     res.should.have.status(404);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -56,7 +80,7 @@ describe('POST /loans/:id/repayment', () => {
   it('should make Payment if all checks are passed', async () => {
     const id = 6;
     const amount = 2724.39;
-    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount });
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount }).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.should.be.a('object');
     res.body.data.should.have.property('loanId').eql(id);
@@ -67,7 +91,7 @@ describe('POST /loans/:id/repayment', () => {
   it('should make Payments and change repaid to true when Loan payment is complete', async () => {
     const id = 8;
     const amount = 155042;
-    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount });
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount }).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.should.be.a('object');
     res.body.data.should.have.property('loanId').eql(id);
@@ -88,14 +112,14 @@ describe('GET /loans/:id/repayments', () => {
   });
   it('Should NOT return list of repayments if ID is not found', async () => {
     const id = 999;
-    const res = await request.get(`/api/v1/loans/${id}/repayments`);
+    const res = await request.get(`/api/v1/loans/${id}/repayments`).set('authorization', `${userToken}`);
     res.should.have.status(404);
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(404);
   });
   it('Should return list of repayments', async () => {
     const id = 6;
-    const res = await request.get(`/api/v1/loans/${id}/repayments`);
+    const res = await request.get(`/api/v1/loans/${id}/repayments`).set('authorization', `${userToken}`);
     res.should.have.status(200);
     res.body.should.have.property('data');
     res.body.data.should.be.a('array');
