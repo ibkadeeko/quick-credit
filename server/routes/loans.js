@@ -7,8 +7,8 @@ const loanRoutes = Router();
 
 loanRoutes.post('/', Validate.loanApplication, Verify.userAccess, Loans.create);
 loanRoutes.get('/', Validate.getRequest, Verify.adminAccess, Loans.getAll);
-loanRoutes.get('/:id', Validate.id, Loans.getOne);
-loanRoutes.patch('/:id', Validate.loanApproval, Loans.LoanApproval);
+loanRoutes.get('/:id', Validate.id, Verify.userAccess, Loans.getOne);
+loanRoutes.patch('/:id', Validate.loanApproval, Verify.adminAccess, Loans.LoanApproval);
 
 // Loan Repayments
 loanRoutes.post('/:id/repayment', Validate.repayment, Loans.postLoanRepayment);
