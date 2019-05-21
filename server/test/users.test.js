@@ -13,7 +13,22 @@ beforeEach(() => {
   request = chai.request(app);
 });
 
+const adminDetails = {
+  email: 'admin@quickcredit.com',
+  password: 'password',
+};
+
+let adminToken;
+
 describe('PATCH /users/:email/verify', () => {
+  before(async () => {
+    try {
+      const res = await chai.request(app).post('/api/v1/auth/login').send(adminDetails);
+      adminToken = res.body.data.token;
+    } catch (error) {
+      console.error('Before Each Error msg:', error.message);
+    }
+  });
   it('It SHOULD NOT work if email is invalid', async () => {
     const email = '1xae4rg2';
     const res = await request.patch(`/api/v1/users/${email}/verify`);
@@ -23,7 +38,7 @@ describe('PATCH /users/:email/verify', () => {
   });
   it('should NOT UPDATE if user email is not in the database', async () => {
     const email = 'mikemikemike@yahoo.com';
-    const res = await request.patch(`/api/v1/users/${email}/verify`);
+    const res = await request.patch(`/api/v1/users/${email}/verify`).set('authorization', `${adminToken}`);
     res.should.have.status(404);
     res.body.should.be.a('object');
     res.body.should.have.property('error');
@@ -31,7 +46,7 @@ describe('PATCH /users/:email/verify', () => {
   });
   it('SHOULD VERIFY the user', async () => {
     const email = 'tomblack@mandela.com';
-    const res = await request.patch(`/api/v1/users/${email}/verify`);
+    const res = await request.patch(`/api/v1/users/${email}/verify`).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.data.should.be.a('object');
     res.body.data.should.have.property('status').eql('verified');
