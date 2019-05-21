@@ -158,7 +158,7 @@ paths:
         200:
           description: ''
           schema:
-            $ref: '#/definitions/SuccessfulResponse1'
+            $ref: '#/definitions/SuccessfulResponse'
           examples:
             application/json; charset=utf-8:
               status: 200
@@ -203,6 +203,65 @@ paths:
             application/json:
               status: 401
               error: email and password do not match
+  /users/{email}/verify:
+    patch:
+      description: Only a valid email is required in the reauest Url
+      summary: Verify User
+      tags:
+      - Users
+      operationId: UsersVerifyByEmailPatch
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: email
+        in: path
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/SuccessfulResponse1'
+          examples:
+            application/json; charset=utf-8:
+              status: 200
+              data:
+                id: 14
+                firstname: mike
+                lastname: brown
+                email: mikebrown@email.com
+                phone: 18001119988
+                status: verified
+                registered: 2019-05-21T00:00:00Z
+          headers:
+            Server:
+              type: string
+              default: Cowboy
+            Connection:
+              type: string
+              default: keep-alive
+            X-Powered-By:
+              type: string
+              default: Express
+            Content-Length:
+              type: string
+              default: 181
+            Etag:
+              type: string
+              default: W/"b5-YzBzIt5BYBDzkkvk+JWWWBO1SZs"
+            Date:
+              type: string
+              default: Tue, 21 May 2019 15:53:18 GMT
+            Via:
+              type: string
+              default: 1.1 vegur
   /loans:
     post:
       description: Creates a Loan Application and returns an object of the Loan Application
@@ -257,7 +316,7 @@ paths:
         201:
           description: ''
           schema:
-            $ref: '#/definitions/SuccessfulResponse'
+            $ref: '#/definitions/SuccessfulResponse2'
           examples:
             application/json; charset=utf-8:
               status: 201
@@ -322,13 +381,13 @@ paths:
         200:
           description: ''
           headers: {}
-  /loans/10:
+  /loans/{id}:
     get:
       description: it retireves a specific loan from the databse based on its ID
       summary: Get a Specific Loan
       tags:
       - Loans
-      operationId: Loans10Get
+      operationId: LoansByIdGet
       deprecated: false
       produces:
       - application/json
@@ -338,17 +397,22 @@ paths:
         required: false
         default: Bearer {token}
         type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: loan ID
       responses:
         200:
           description: ''
           headers: {}
-  /loans/3:
     patch:
-      description: "The parameter neede in the body is the status. \nstatus should be set to either approved or rejected"
+      description: "The parameter needed in the body is the status. \nstatus should be set to either approved or rejected"
       summary: Approve or Reject Loan Application
       tags:
       - Loans
-      operationId: Loans3Patch
+      operationId: LoansByIdPatch
       deprecated: false
       produces:
       - application/json; charset=utf-8
@@ -360,6 +424,12 @@ paths:
         required: false
         default: Bearer {token}
         type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: loan ID
       - name: Content-Type
         in: header
         required: true
@@ -421,72 +491,13 @@ paths:
             application/json:
               status: 400
               error: Loan Approval Decision has already been made for this application
-  /users/{email}/verify:
-    patch:
-      description: Only a valid email is required in the reauest Url
-      summary: Verify User
-      tags:
-      - Users
-      operationId: UsersVerifyByEmailPatch
-      deprecated: false
-      produces:
-      - application/json; charset=utf-8
-      parameters:
-      - name: Authorization
-        in: header
-        required: false
-        default: Bearer {token}
-        type: string
-      - name: email
-        in: path
-        required: true
-        type: string
-        description: ''
-      responses:
-        200:
-          description: ''
-          schema:
-            $ref: '#/definitions/SuccessfulResponse2'
-          examples:
-            application/json; charset=utf-8:
-              status: 200
-              data:
-                id: 14
-                firstname: mike
-                lastname: brown
-                email: mikebrown@email.com
-                phone: 18001119988
-                status: verified
-                registered: 2019-05-21T00:00:00Z
-          headers:
-            Server:
-              type: string
-              default: Cowboy
-            Connection:
-              type: string
-              default: keep-alive
-            X-Powered-By:
-              type: string
-              default: Express
-            Content-Length:
-              type: string
-              default: 181
-            Etag:
-              type: string
-              default: W/"b5-YzBzIt5BYBDzkkvk+JWWWBO1SZs"
-            Date:
-              type: string
-              default: Tue, 21 May 2019 15:53:18 GMT
-            Via:
-              type: string
-              default: 1.1 vegur
-  /loans/2/repayment:
+  /loans/{id}/repayment:
     post:
       description: Repayment amount is the parameter needed in the body and loan ID in the URL
       summary: Post Loan repayment
       tags:
       - Repayments
-      operationId: Loans2RepaymentPost
+      operationId: LoansRepaymentByIdPost
       deprecated: false
       produces:
       - application/json
@@ -498,6 +509,12 @@ paths:
         required: false
         default: Bearer {token}
         type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: Loan ID
       - name: Content-Type
         in: header
         required: true
@@ -513,13 +530,13 @@ paths:
         200:
           description: ''
           headers: {}
-  /loans/2/repayments:
+  /loans/{id}/repayments:
     get:
       description: "The loan repayments of a loan is retrieved using its ID.\nThe id is included as a parameter in the request parameter "
       summary: Retrieve Loan Repayments
       tags:
       - Repayments
-      operationId: Loans2RepaymentsGet
+      operationId: LoansRepaymentsByIdGet
       deprecated: false
       produces:
       - application/json
@@ -529,6 +546,12 @@ paths:
         required: false
         default: Bearer {token}
         type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: Loan ID
       - name: Content-Type
         in: header
         required: true
@@ -539,190 +562,6 @@ paths:
           description: ''
           headers: {}
 definitions:
-  SuccessfulResponse:
-    title: SuccessfulResponse
-    example:
-      status: 201
-      data:
-        id: 11
-        firstname: mike
-        lastname: brown
-        email: mikebrown@email.com
-        amount: 100000
-        tenor: 6
-        status: pending
-        paymentinstallment: 17156.139999999999
-        balance: 102936.84
-        interest: 2936.8400000000001
-        createdon: 2019-05-21T00:00:00Z
-    type: object
-    properties:
-      status:
-        type: integer
-        format: int32
-      data:
-        $ref: '#/definitions/Data'
-    required:
-    - status
-    - data
-  Data:
-    title: Data
-    example:
-      id: 11
-      firstname: mike
-      lastname: brown
-      email: mikebrown@email.com
-      amount: 100000
-      tenor: 6
-      status: pending
-      paymentinstallment: 17156.139999999999
-      balance: 102936.84
-      interest: 2936.8400000000001
-      createdon: 2019-05-21T00:00:00Z
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int32
-      firstname:
-        type: string
-      lastname:
-        type: string
-      email:
-        type: string
-      amount:
-        type: integer
-        format: int32
-      tenor:
-        type: integer
-        format: int32
-      status:
-        type: string
-      paymentinstallment:
-        type: number
-        format: double
-      balance:
-        type: number
-        format: double
-      interest:
-        type: number
-        format: double
-      createdon:
-        type: string
-    required:
-    - id
-    - firstname
-    - lastname
-    - email
-    - amount
-    - tenor
-    - status
-    - paymentinstallment
-    - balance
-    - interest
-    - createdon
-  BadRequest:
-    title: BadRequest
-    example:
-      status: 400
-      error: Amount is required
-    type: object
-    properties:
-      status:
-        type: integer
-        format: int32
-      error:
-        type: string
-    required:
-    - status
-    - error
-  SuccessResponse:
-    title: SuccessResponse
-    example:
-      status: 200
-      data:
-        id: 3
-        firstname: Mariquilla
-        lastname: Greenhough
-        email: mgreenhough0@noaa.gov
-        amount: 104000
-        tenor: 3
-        status: approved
-        repaid: false
-        paymentinstallment: 35246.040000000001
-        balance: 105738.12
-        interest: 1738.1199999999999
-        createdon: 2019-05-21T00:00:00Z
-    type: object
-    properties:
-      status:
-        type: integer
-        format: int32
-      data:
-        $ref: '#/definitions/Data1'
-    required:
-    - status
-    - data
-  Data1:
-    title: Data1
-    example:
-      id: 3
-      firstname: Mariquilla
-      lastname: Greenhough
-      email: mgreenhough0@noaa.gov
-      amount: 104000
-      tenor: 3
-      status: approved
-      repaid: false
-      paymentinstallment: 35246.040000000001
-      balance: 105738.12
-      interest: 1738.1199999999999
-      createdon: 2019-05-21T00:00:00Z
-    type: object
-    properties:
-      id:
-        type: integer
-        format: int32
-      firstname:
-        type: string
-      lastname:
-        type: string
-      email:
-        type: string
-      amount:
-        type: integer
-        format: int32
-      tenor:
-        type: integer
-        format: int32
-      status:
-        type: string
-      repaid:
-        type: boolean
-      paymentinstallment:
-        type: number
-        format: double
-      balance:
-        type: number
-        format: double
-      interest:
-        type: number
-        format: double
-      createdon:
-        type: string
-    required:
-    - id
-    - firstname
-    - lastname
-    - email
-    - amount
-    - tenor
-    - status
-    - repaid
-    - paymentinstallment
-    - balance
-    - interest
-    - createdon
   SuccesfulResponse:
     title: SuccesfulResponse
     example:
@@ -744,12 +583,12 @@ definitions:
         type: integer
         format: int32
       data:
-        $ref: '#/definitions/Data2'
+        $ref: '#/definitions/Data'
     required:
     - status
     - data
-  Data2:
-    title: Data2
+  Data:
+    title: Data
     example:
       token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJlbWFpbCI6Im1pa2Vicm93bkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNTU4NDUzNzc3LCJleHAiOjE1NTg0NzUzNzd9.t8VZ-fJygbxNhrF3ADXlu4007n9WPP6ZEWlbjl96oS8
       user:
@@ -808,8 +647,23 @@ definitions:
     - phone
     - status
     - registered
-  SuccessfulResponse1:
-    title: SuccessfulResponse1
+  BadRequest:
+    title: BadRequest
+    example:
+      status: 409
+      error: User with this email already exists
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      error:
+        type: string
+    required:
+    - status
+    - error
+  SuccessfulResponse:
+    title: SuccessfulResponse
     example:
       status: 200
       data:
@@ -829,12 +683,12 @@ definitions:
         type: integer
         format: int32
       data:
-        $ref: '#/definitions/Data2'
+        $ref: '#/definitions/Data'
     required:
     - status
     - data
-  SuccessfulResponse2:
-    title: SuccessfulResponse2
+  SuccessfulResponse1:
+    title: SuccessfulResponse1
     example:
       status: 200
       data:
@@ -851,12 +705,12 @@ definitions:
         type: integer
         format: int32
       data:
-        $ref: '#/definitions/Data4'
+        $ref: '#/definitions/Data2'
     required:
     - status
     - data
-  Data4:
-    title: Data4
+  Data2:
+    title: Data2
     example:
       id: 14
       firstname: mike
@@ -890,10 +744,181 @@ definitions:
     - phone
     - status
     - registered
+  SuccessfulResponse2:
+    title: SuccessfulResponse2
+    example:
+      status: 201
+      data:
+        id: 11
+        firstname: mike
+        lastname: brown
+        email: mikebrown@email.com
+        amount: 100000
+        tenor: 6
+        status: pending
+        paymentinstallment: 17156.139999999999
+        balance: 102936.84
+        interest: 2936.8400000000001
+        createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data3'
+    required:
+    - status
+    - data
+  Data3:
+    title: Data3
+    example:
+      id: 11
+      firstname: mike
+      lastname: brown
+      email: mikebrown@email.com
+      amount: 100000
+      tenor: 6
+      status: pending
+      paymentinstallment: 17156.139999999999
+      balance: 102936.84
+      interest: 2936.8400000000001
+      createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      tenor:
+        type: integer
+        format: int32
+      status:
+        type: string
+      paymentinstallment:
+        type: number
+        format: double
+      balance:
+        type: number
+        format: double
+      interest:
+        type: number
+        format: double
+      createdon:
+        type: string
+    required:
+    - id
+    - firstname
+    - lastname
+    - email
+    - amount
+    - tenor
+    - status
+    - paymentinstallment
+    - balance
+    - interest
+    - createdon
+  SuccessResponse:
+    title: SuccessResponse
+    example:
+      status: 200
+      data:
+        id: 3
+        firstname: Mariquilla
+        lastname: Greenhough
+        email: mgreenhough0@noaa.gov
+        amount: 104000
+        tenor: 3
+        status: approved
+        repaid: false
+        paymentinstallment: 35246.040000000001
+        balance: 105738.12
+        interest: 1738.1199999999999
+        createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      status:
+        type: integer
+        format: int32
+      data:
+        $ref: '#/definitions/Data4'
+    required:
+    - status
+    - data
+  Data4:
+    title: Data4
+    example:
+      id: 3
+      firstname: Mariquilla
+      lastname: Greenhough
+      email: mgreenhough0@noaa.gov
+      amount: 104000
+      tenor: 3
+      status: approved
+      repaid: false
+      paymentinstallment: 35246.040000000001
+      balance: 105738.12
+      interest: 1738.1199999999999
+      createdon: 2019-05-21T00:00:00Z
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      tenor:
+        type: integer
+        format: int32
+      status:
+        type: string
+      repaid:
+        type: boolean
+      paymentinstallment:
+        type: number
+        format: double
+      balance:
+        type: number
+        format: double
+      interest:
+        type: number
+        format: double
+      createdon:
+        type: string
+    required:
+    - id
+    - firstname
+    - lastname
+    - email
+    - amount
+    - tenor
+    - status
+    - repaid
+    - paymentinstallment
+    - balance
+    - interest
+    - createdon
 tags:
-- name: Loans
-  description: Contains all the Loan Requests
+- name: Auth
+  description: Contains the routes for a user to sign up or sign in
 - name: Users
   description: Contains all the user requests
+- name: Loans
+  description: Contains all the Loan Requests
 - name: Repayments
   description: Contains all the repayment requests
