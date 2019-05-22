@@ -70,3 +70,101 @@ describe('USER Query Functions', () => {
     expect(result).to.equal(false);
   });
 });
+
+const fakeEmail = 'ibkizzles@outlook.com';
+
+describe('POST /reset_password', () => {
+  it('Should not reset if email is omitted', async () => {
+    const email = 'rbewrberbr';
+    const res = await request.post(`/api/v1/users/${email}/reset_password`);
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not reset if email is omitted', async () => {
+    const email = '         ';
+    const res = await request.post(`/api/v1/users/${email}/reset_password`);
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not reset if user is not found', async () => {
+    const res = await request.post(`/api/v1/users/${fakeEmail}/reset_password`);
+    res.should.have.status(404);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not change password if new password is omitted', async () => {
+    const email = 'tomblack@mandela.com';
+    const resetBody = {
+      password: 'password',
+    };
+    const res = await request.post(`/api/v1/users/${email}/reset_password`).send(resetBody);
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not change password if old password is omitted', async () => {
+    const email = 'tomblack@mandela.com';
+    const resetBody = {
+      new_password: 'password',
+    };
+    const res = await request.post(`/api/v1/users/${email}/reset_password`).send(resetBody);
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not change password if new password is less than 6 characters', async () => {
+    const email = 'tomblack@mandela.com';
+    const resetBody = {
+      password: 'password',
+      new_password: 'pass',
+    };
+    const res = await request.post(`/api/v1/users/${email}/reset_password`).send(resetBody);
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not reset password if email is not in database', async () => {
+    const resetBody = {
+      password: 'password',
+      new_password: 'password',
+    };
+    const res = await request.post(`/api/v1/users/${fakeEmail}/reset_password`).send(resetBody);
+    res.should.have.status(404);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should not change password if password is wrong', async () => {
+    const email = 'tomblack@mandela.com';
+    const resetBody = {
+      password: 'password',
+      new_password: 'password',
+    };
+    const res = await request.post(`/api/v1/users/${email}/reset_password`).send(resetBody);
+    res.should.have.status(401);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+  });
+  it('Should change password', async () => {
+    const email = 'tomblack@mandela.com';
+    const resetBody = {
+      password: 'Ilove0dogs#',
+      new_password: 'password'
+    };
+    const res = await request.post(`/api/v1/users/${email}/reset_password`).send(resetBody);
+    res.should.have.status(200);
+    res.body.should.have.property('status').eql(200);
+    res.body.should.be.a('object');
+    res.body.data.should.be.a('object');
+  });
+  it('Should send reset email', async () => {
+    const email = 'tomblack@mandela.com';
+    const res = await request.post(`/api/v1/users/${email}/reset_password`);
+    res.should.have.status(200);
+    res.body.should.have.property('status').eql(200);
+    res.body.should.be.a('object');
+    res.body.data.should.be.a('object');
+    res.body.data.should.have.property('message').eql('Reset Password Email Successfully Sent');
+  });
+});

@@ -85,7 +85,7 @@ class Validate {
   }
 
   static reset(req, res, next) {
-    req.checkBody('email')
+    req.checkParams('email')
       .notEmpty()
       .withMessage('Email is required')
       .trim()
@@ -94,21 +94,18 @@ class Validate {
       )
       .withMessage('Input a valid email Parameter')
       .customSanitizer(email => email.toLowerCase());
-    const errors = req.validationErrors();
-    if (errors) {
-      return errorRes(next, 400, errors[0].msg);
-    }
-    next();
-  }
-
-  static changePassword(req, res, next) {
-    req.checkQuery('token')
-      .notEmpty()
-      .withMessage('Reset Token Query is required');
     req.checkBody('password')
+      .optional()
       .trim()
       .notEmpty()
       .withMessage('Password is required');
+    req.checkBody('new_password')
+      .optional()
+      .trim()
+      .notEmpty()
+      .withMessage('New Password is required')
+      .isLength({ min: 6 })
+      .withMessage('Password Should have a minimum length of 6');
     const errors = req.validationErrors();
     if (errors) {
       return errorRes(next, 400, errors[0].msg);

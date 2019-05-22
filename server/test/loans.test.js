@@ -19,7 +19,7 @@ const adminDetails = {
 
 const userDetails = {
   email: 'tomblack@mandela.com',
-  password: '123456',
+  password: 'Ilove0dogs#',
 };
 
 let userToken;
