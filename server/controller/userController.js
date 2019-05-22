@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import generator from 'generate-password';
 import { errorRes, successRes } from '../utils/responseHandler';
 import resetPasswordEmail from '../utils/email';
 import UserModel from '../models/userModel';
@@ -90,34 +91,29 @@ class Users {
    * @param {function} next
    */
   static async resetPassword(req, res, next) {
-    const { email } = req.body;
+    const { email } = req.params;
     const foundUser = await UserModel.find(email);
     if (!foundUser) { return errorRes(next, 404, 'User with this email was not found'); }
-    const token = jwt.sign({ email }, process.env.SECRETkey, { expiresIn: '3h' });
-    const sent = await resetPasswordEmail(email, token);
-    if (!sent) return errorRes(next, 500, 'Unable to send Email');
-    return successRes(res, 200, { message: 'Reset Password Email Successfully Sent' });
-  }
-
-  /**
-   * Change a users password
-   * @param {object} req - request
-   * @param {object} res - response
-   * @param {function} next
-   */
-  static async changePassword(req, res, next) {
-    const { password } = req.body;
-    const { token } = req.query;
-    try {
-      const { email } = jwt.verify(token, process.env.SECRETkey);
-      const foundUser = await UserModel.find(email);
-      if (!foundUser) return errorRes(next, 404, 'User with this email was not found');
+    if (Object.keys(req.body).length === 0) {
+      const password = generator.generate({
+        length: 10,
+        strict: true,
+      });
       const hashedPassword = bcrypt.hashSync(password, 8);
+      const sent = await resetPasswordEmail(email, password);
+      if (!sent) return errorRes(next, 500, 'Unable to send Email');
       const update = await UserModel.changePassword(email, hashedPassword);
-      return successRes(res, 200, update);
-    } catch (error) {
-      next(error);
+      return successRes(res, 200, { message: 'Reset Password Email Successfully Sent' });
     }
+    const { password, new_password } = req.body;
+    if (password && new_password) {
+      const passwordIsValid = bcrypt.compareSync(password, foundUser.password);
+      if (!passwordIsValid) { return errorRes(next, 401, 'Incorrect Password'); }
+      const hashedPassword = bcrypt.hashSync(new_password, 8);
+      const update = await UserModel.changePassword(email, hashedPassword);
+      return successRes(res, 200, { message: 'Password Successfully Changed', update });
+    }
+    return errorRes(next, 400, 'Invalid Request');
   }
 }
 

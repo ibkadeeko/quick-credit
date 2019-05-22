@@ -6,5 +6,6 @@ import Verify from '../middleware/verifyToken';
 const userRoutes = Router();
 
 userRoutes.patch('/:email/verify', Validate.verify, Verify.adminAccess, Users.verify);
+userRoutes.post('/:email/reset_password', Validate.reset, Users.resetPassword);
 
 export default userRoutes;
