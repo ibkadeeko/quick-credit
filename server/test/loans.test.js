@@ -326,13 +326,13 @@ describe('PATCH /loans/:id', () => {
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(400);
   });
-  it('SHOULD UPDATE the Loan Application', async () => {
+  it('SHOULD NOT APPROVE the Loan Application of Unverified User', async () => {
     const id = 1;
     const res = await request.patch(`/api/v1/loans/${id}`).send({ status: 'approved' }).set('authorization', `${adminToken}`);
-    res.should.have.status(200);
-    res.body.data.should.be.a('object');
-    res.body.data.should.have.property('id').eql(id);
-    res.body.data.should.have.property('status').eql('approved');
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(400);
   });
   it('SHOULD UPDATE the Loan Application', async () => {
     const id = 3;

@@ -134,6 +134,16 @@ class LoanModel {
       return false;
     }
   }
+
+  /**
+   * Retrieves the verification status of the user that owns the provided Loan ID
+   * @param {number} id - Loan ID
+   */
+  static async userVerificationStatus(id) {
+    const text = 'SELECT users.status FROM users INNER JOIN loans ON (users.email = loans.email) WHERE loans.id = $1';
+    const { rows } = await db.query(text, [id]);
+    return rows[0].status;
+  }
 }
 
 export default LoanModel;

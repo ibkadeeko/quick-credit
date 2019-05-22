@@ -124,6 +124,10 @@ class Loans {
         'Loan Approval Decision has already been made for this application',
       );
     }
+    const verificationStatus = await LoanModel.userVerificationStatus(id);
+    if (status === 'approved' && verificationStatus === 'unverified') {
+      return errorRes(next, 400, 'Cannot approve loan of unverified user');
+    }
     const applicationRes = await LoanModel.handleApproval(id, status);
     return successRes(res, 200, applicationRes);
   }
