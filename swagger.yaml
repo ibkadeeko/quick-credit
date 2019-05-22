@@ -4,6 +4,7 @@ info:
   title: Quick Credit
   description: Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.
   contact:
+    name: Ibukunoluwa Adeeko
     email: ibukunadeeko@gmail.com
 host: ibk-quick-credit.herokuapp.com
 basePath: /api/v1
@@ -377,6 +378,17 @@ paths:
         required: false
         default: Bearer {token}
         type: string
+      - name: status
+        in: query
+        required: false
+        type: string
+        description: 'Loan Status: approved'
+        enum:
+        - approved
+      - name: repaid
+        in: query
+        required: false
+        type: boolean
       responses:
         200:
           description: ''
