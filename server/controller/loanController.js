@@ -97,9 +97,14 @@ class Loans {
    */
   static async getOne(req, res, next) {
     const id = parseInt(req.params.id, 10);
+    const userId = parseInt(res.locals.userId, 10);
     const loan = await LoanModel.findById(id);
     if (!loan) {
       return errorRes(next, 404, 'Loan with this id was not found');
+    }
+    const loanUserId = await LoanModel.getUserIdFromLoanId(id);
+    if (!res.locals.isAdmin) {
+      if (loanUserId !== userId) return errorRes(next, 401, 'You cannot view another users Loan');
     }
     return successRes(res, 200, loan);
   }

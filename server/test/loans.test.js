@@ -289,9 +289,17 @@ describe('Get /loans/:id', () => {
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(404);
   });
-  it('should LIST a SINGLE Loan', async () => {
+  it('should NOT LIST a single Loan if loan does not belong to user', async () => {
     const id = 1;
     const res = await request.get(`/api/v1/loans/${id}`).set('authorization', `${userToken}`);
+    res.should.have.status(401);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(401);
+  });
+  it('should LIST a SINGLE Loan', async () => {
+    const id = 1;
+    const res = await request.get(`/api/v1/loans/${id}`).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.data.should.be.a('object');
     res.body.data.should.have.property('id');
