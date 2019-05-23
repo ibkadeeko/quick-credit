@@ -189,6 +189,11 @@ class Loans {
     if (!loanRepaymentsArray.length) {
       return errorRes(next, 404, `Repayments for Loan with ID: ${loanId} not found`);
     }
+    const userId = parseInt(res.locals.userId, 10);
+    const loanUserId = await LoanModel.getUserIdFromLoanId(loanId);
+    if (!res.locals.isAdmin) {
+      if (loanUserId !== userId) return errorRes(next, 401, 'You cannot view another users repayment history');
+    }
     return successRes(res, 200, loanRepaymentsArray);
   }
 }
