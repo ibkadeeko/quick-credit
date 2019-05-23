@@ -144,6 +144,16 @@ class LoanModel {
     const { rows } = await db.query(text, [id]);
     return rows[0].status;
   }
+
+  /**
+   * Retrieves the Users ID for the provided Loan ID
+   * @param {number} id - Loan ID
+   */
+  static async getUserIdFromLoanId(id) {
+    const text = 'SELECT users.id FROM users INNER JOIN loans ON (users.email = loans.email) WHERE loans.id = $1';
+    const { rows } = await db.query(text, [id]);
+    return rows[0].id;
+  }
 }
 
 export default LoanModel;

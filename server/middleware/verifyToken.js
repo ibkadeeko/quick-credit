@@ -18,9 +18,10 @@ class Verify {
       token = token.slice(7, token.length);
     }
     try {
-      const { userId, email } = jwt.verify(token, process.env.SECRETkey);
+      const { userId, email, isAdmin } = jwt.verify(token, process.env.SECRETkey);
       res.locals.userId = userId;
       res.locals.email = email;
+      res.locals.isAdmin = isAdmin;
       next();
     } catch (error) {
       return errorRes(next, 401, 'Invalid Token Provided');
@@ -44,6 +45,7 @@ class Verify {
       if (!isAdmin) return errorRes(next, 403, 'You do not have authorization to access this route');
       res.locals.userId = userId;
       res.locals.email = email;
+      res.locals.isAdmin = isAdmin;
       next();
     } catch (error) {
       return errorRes(next, 401, 'Invalid Token Provided');
