@@ -117,9 +117,16 @@ describe('GET /loans/:id/repayments', () => {
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(404);
   });
-  it('Should return list of repayments', async () => {
+  it('Should NOT return list of repayments if request is not sent by owner of loan', async () => {
     const id = 6;
     const res = await request.get(`/api/v1/loans/${id}/repayments`).set('authorization', `${userToken}`);
+    res.should.have.status(401);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(401);
+  });
+  it('Should return list of repayments', async () => {
+    const id = 6;
+    const res = await request.get(`/api/v1/loans/${id}/repayments`).set('authorization', `${adminToken}`);
     res.should.have.status(200);
     res.body.should.have.property('data');
     res.body.data.should.be.a('array');
