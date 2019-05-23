@@ -52,6 +52,13 @@ describe('PATCH /users/:email/verify', () => {
     res.body.data.should.have.property('status').eql('verified');
     res.body.data.should.have.property('email').eql(email);
   });
+  it('SHOULD VERIFY the user', async () => {
+    const email = 'tomblack@mandela.com';
+    const res = await request.patch(`/api/v1/users/${email}/verify`).set('authorization', `${adminToken}`);
+    res.should.have.status(400);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(400);
+  });
 });
 
 const newUser = {

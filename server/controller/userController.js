@@ -79,6 +79,7 @@ class Users {
     const { email } = req.params;
     const foundUser = await UserModel.find(email);
     if (!foundUser) { return errorRes(next, 404, 'User with this email was not found'); }
+    if (foundUser.status === 'verified') { return errorRes(next, 400, 'User has already been verified'); }
     const user = await UserModel.verify(email);
     const userObject = keys.reduce((result, key) => ({ ...result, [key]: user[key] }), {});
     return successRes(res, 200, userObject);
