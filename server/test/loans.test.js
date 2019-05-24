@@ -16,14 +16,28 @@ const adminDetails = {
   email: 'admin@quickcredit.com',
   password: 'password',
 };
-
 const userDetails = {
   email: 'tomblack@mandela.com',
   password: 'Ilove0dogs#',
 };
+const pendingDetails = {
+  email: 'mgreenhough0@noaa.gov',
+  password: 'password',
+};
+const unpaidDetails = {
+  email: 'bdedam1@bigcartel.com',
+  password: 'password',
+};
+const repaidDetails = {
+  email: 'clakeman4@amazonaws.com',
+  password: 'password',
+};
 
 let userToken;
 let adminToken;
+let pending;
+let unpaid;
+let repaid;
 
 const malformedToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEsImVtYWlsIjoicG9saXRpY29hZG1pbkBwb2xpdGljby5jb20iLCJpc2FkbWluIjp0cnVlLCJpYXQiOjE1NTA3NjM4MjksImV4cCI6MTU1MDc4NTQyOX0.Ta3DQLDQxn-59WDZETWpBawcFsvfBzNa74PMF40_mWg';
 
@@ -32,8 +46,14 @@ describe('POST /loans', () => {
     try {
       const response = await chai.request(app).post('/api/v1/auth/login').send(userDetails);
       const res = await chai.request(app).post('/api/v1/auth/login').send(adminDetails);
+      const pendingRes = await chai.request(app).post('/api/v1/auth/login').send(pendingDetails);
+      const unpaidRes = await chai.request(app).post('/api/v1/auth/login').send(unpaidDetails);
+      const repaidRes = await chai.request(app).post('/api/v1/auth/login').send(repaidDetails);
       userToken = response.body.data.token;
       adminToken = res.body.data.token;
+      pending = pendingRes.body.data.token;
+      unpaid = unpaidRes.body.data.token;
+      repaid = repaidRes.body.data.token;
     } catch (error) {
       console.error('Before Each Error msg:', error.message);
     }
@@ -124,7 +144,7 @@ describe('POST /loans', () => {
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(400);
   });
-  it('SHOULD NOT submit the form if User has a Pending Loan Application', async () => {
+  it('SHOULD NOT submit the form if User doesn\'t own loan application', async () => {
     const loanApplication = {
       firstName: 'Tod',
       lastName: 'Mahog',
@@ -133,6 +153,19 @@ describe('POST /loans', () => {
       tenor: 6,
     };
     const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${userToken}`);
+    res.should.have.status(400);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(400);
+  });
+  it('SHOULD NOT submit the form if User has a Pending Loan Application', async () => {
+    const loanApplication = {
+      firstName: 'Tod',
+      lastName: 'Mahog',
+      email: 'mgreenhough0@noaa.gov',
+      amount: 100000,
+      tenor: 6,
+    };
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${pending}`);
     res.should.have.status(409);
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(409);
@@ -145,7 +178,7 @@ describe('POST /loans', () => {
       amount: 100000,
       tenor: 6,
     };
-    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${userToken}`);
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${unpaid}`);
     res.should.have.status(409);
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(409);
@@ -201,7 +234,7 @@ describe('POST /loans', () => {
       amount: 100000,
       tenor: 6,
     };
-    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${userToken}`);
+    const res = await request.post('/api/v1/loans').send(loanApplication).set('authorization', `${repaid}`);
     res.should.have.status(201);
     res.body.should.have.property('status').eql(201);
     res.body.should.be.a('object');

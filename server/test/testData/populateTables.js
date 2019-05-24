@@ -16,16 +16,16 @@ const queryText = 'INSERT INTO users (firstname, lastname, email, password, phon
 
 
 const populate = `
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Mariquilla', 'Greenhough', 'mgreenhough0@noaa.gov', 'ar0Qcw5gT', 08012223340, 'unverified', false, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Bentlee', 'Dedam', 'bdedam1@bigcartel.com', 'u2Rb1uwC',  08012223341, 'verified', true, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Lissy', 'Krink', 'lkrink2@rakuten.co.jp', 'lgKVaTCFGHHe', 08012223342, 'verified', false, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Veronique', 'McGrory', 'vmcgrory3@cdbaby.com', 'Ky2PPhK', 08012223343, 'unverified', true, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Candis', 'Lakeman', 'clakeman4@amazonaws.com', 'Uf8cpVqGqmER', 08012223344, 'unverified', true, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Karalynn', 'Arlott', 'karlott5@scientificamerican.com',  'advervcYY', 08012223345, 'unverified', false, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Britney', 'Spillett', 'bspillett6@japanpost.jp', 'b4WHNczDd4l', 08012223346, 'unverified', false, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Hervey', 'Jorioz', 'hjorioz7@bravesites.com', 'SdyaRDF99e', 08012223347, 'verified', true, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Theresa', 'Groucutt', 'tgroucutt8@bbb.org', 'XTvuFao', 08012223348, 'unverified', true, default);
-  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Isa', 'Scuse', 'iscuse9@tamu.edu', 'gnpL3v', 08012223349, 'unverified', false, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Mariquilla', 'Greenhough', 'mgreenhough0@noaa.gov', '${password}', 08012223340, 'unverified', false, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Bentlee', 'Dedam', 'bdedam1@bigcartel.com', '${password}',  08012223341, 'verified', true, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Lissy', 'Krink', 'lkrink2@rakuten.co.jp', '${password}', 08012223342, 'verified', false, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Veronique', 'McGrory', 'vmcgrory3@cdbaby.com', '${password}', 08012223343, 'unverified', true, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Candis', 'Lakeman', 'clakeman4@amazonaws.com', '${password}', 08012223344, 'unverified', true, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Karalynn', 'Arlott', 'karlott5@scientificamerican.com',  '${password}', 08012223345, 'unverified', false, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Britney', 'Spillett', 'bspillett6@japanpost.jp', '${password}', 08012223346, 'unverified', false, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Hervey', 'Jorioz', 'hjorioz7@bravesites.com', '${password}', 08012223347, 'verified', true, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Theresa', 'Groucutt', 'tgroucutt8@bbb.org', '${password}', 08012223348, 'unverified', true, default);
+  INSERT INTO users (id, firstname, lastname, email, password, phone, status, isadmin, registered) VALUES (default, 'Isa', 'Scuse', 'iscuse9@tamu.edu', '${password}', 08012223349, 'unverified', false, default);
 
   INSERT INTO loans (id, firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest, createdon) VALUES  (default, 'Mariquilla', 'Greenhough', 'mgreenhough0@noaa.gov', 104000, 3, 'pending', false, 35246.04, 105738.12, 1738.12, default);
   INSERT INTO loans (id, firstname, lastname, email, amount, tenor, status, repaid, paymentinstallment, balance, interest, createdon) VALUES  (default, 'Bentlee', 'Dedam', 'bdedam1@bigcartel.com', 112000, 3, 'approved', false, 37957.28, 113871.84, 1871.84, default);

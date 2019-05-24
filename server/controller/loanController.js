@@ -31,6 +31,7 @@ class Loans {
     const {
       firstName, lastName, email, amount, tenor,
     } = req.body;
+    if (res.locals.email !== email) { return errorRes(next, 400, 'email does not match users email'); }
     const amountInt = parseInt(amount, 10);
     const tenorInt = parseInt(tenor, 10);
     const { paymentInstallment, interest, balance } = loanPayment(amountInt, tenorInt);
