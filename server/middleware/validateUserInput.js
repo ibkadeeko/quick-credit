@@ -40,6 +40,15 @@ class Validate {
       .withMessage('Input a valid Phone Number')
       .isLength({ min: 8 })
       .withMessage('Minimum length of Phone Number is 8 digits');
+    req
+      .checkBody('address')
+      .notEmpty()
+      .withMessage('Address field is required')
+      .trim()
+      .isLength({ min: 10 })
+      .withMessage('Address should be a minimum of 10 characters')
+      .matches(/^[a-zA-Z0-9\s,.'-]{3,}$/)
+      .withMessage('Invalid Address format entered');
     const errors = req.validationErrors();
     if (errors) {
       return errorRes(next, 400, errors[0].msg);

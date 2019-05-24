@@ -10,7 +10,8 @@
     "test": "cross-env NODE_ENV=test nyc mocha --recursive ./server/test/ --timeout=100000 --exit",
     "createtables": "babel-node ./server/db/createTables.js",
     "populatetables": "babel-node ./server/db/populateTables.js",
-    "droptables": "babel-node ./server/db/dropTables.js"
+    "droptables": "babel-node ./server/db/dropTables.js",
+    "createadmin": "babel-node ./server/db/createAdmin.js"
   },
   "repository": {
     "type": "git",

@@ -73,6 +73,19 @@ describe('POST auth/signup', () => {
     res.body.should.have.property('error');
     res.body.should.have.property('status').eql(400);
   });
+  it('SHOULD NOT register the user if address is omitted', async () => {
+    const newUser = {
+      firstName: 'michael',
+      lastName: 'wagner',
+      password: 'six',
+      email: 'mikewagner@andela.com',
+      phone: 18007593000,
+    };
+    const res = await request.post('/api/v1/auth/signup').send(newUser);
+    res.should.have.status(400);
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(400);
+  });
   it('SHOULD NOT register the user if password is less than 6 characters', async () => {
     const newUser = {
       firstName: 'michael',
@@ -80,6 +93,7 @@ describe('POST auth/signup', () => {
       password: 'six',
       email: 'mikewagner@andela.com',
       phone: 18007593000,
+      address: '674 Hoffman Circle',
     };
     const res = await request.post('/api/v1/auth/signup').send(newUser);
     res.should.have.status(400);
@@ -93,6 +107,7 @@ describe('POST auth/signup', () => {
       email: 'tomblack@mandela.com',
       phone: 19002000800,
       password: 'Ilove0dogs#',
+      address: '674 Hoffman Circle',
     };
     const res = await request.post('/api/v1/auth/signup').send(newUser);
     res.should.have.status(201);
@@ -108,6 +123,7 @@ describe('POST auth/signup', () => {
       email: 'tomblack@mandela.com',
       phone: 19002000800,
       password: 'Ilove0dogs#',
+      address: '674 Hoffman Circle',
     };
     const res = await request.post('/api/v1/auth/signup').send(newUser);
     res.should.have.status(409);
@@ -121,6 +137,7 @@ describe('POST auth/signup', () => {
       email: 'nigelhenderson@great.com',
       phone: 19002000800,
       password: 'Ilovelove#',
+      address: '674 Hoffman Circle',
     };
     const res = await request.post('/api/v1/auth/signup').send(newUser);
     res.should.have.status(409);

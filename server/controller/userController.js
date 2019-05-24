@@ -5,7 +5,7 @@ import { errorRes, successRes } from '../utils/responseHandler';
 import resetPasswordEmail from '../utils/email';
 import UserModel from '../models/userModel';
 
-const keys = ['id', 'firstname', 'lastname', 'email', 'phone', 'status', 'registered'];
+const keys = ['id', 'firstname', 'lastname', 'email', 'phone', 'address', 'status', 'registered'];
 
 /**
  * Contains all the user route methods
@@ -19,7 +19,7 @@ class Users {
    */
   static async signup(req, res, next) {
     const {
-      firstName, lastName, email, password, phone,
+      firstName, lastName, email, password, phone, address,
     } = req.body;
     const emailAlreadyExists = await UserModel.find(email);
     if (emailAlreadyExists) return errorRes(next, 409, 'User with this email already exists');
@@ -32,6 +32,7 @@ class Users {
       email,
       password: hashedPassword,
       phone,
+      address,
       status: 'unverified',
       isAdmin: false,
     };
