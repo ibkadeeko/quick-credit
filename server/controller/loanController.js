@@ -158,6 +158,8 @@ class Loans {
     if (loanObject.repaid === true) {
       return errorRes(next, 400, `Loan with ID: ${loanId} has been fully repaid`);
     }
+    const currentBalance = Math.ceil(loanObject.balance);
+    if (paidAmount > currentBalance) { return errorRes(next, 400, `Paid Amount Exceeds Balance. Your current balance is ${currentBalance}`); }
     const {
       amount,
       paymentInstallment: monthlyInstallment,
