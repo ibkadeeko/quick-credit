@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Quick Credit</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
@@ -14,9 +14,6 @@
         <div class="logo">
           <a href="#">quick credit</a>
         </div>
-        <nav class="menu">
-          <a id='back'>&#10229; back</a>
-        </nav>
         <div class="menu-toggle">
           <a class="toggle-nav" href="#">&#9776;</a>
         </div>
@@ -24,39 +21,110 @@
     </header>
 
     <div id="main-body" class="bg-grey">
-      <div class="container">
-        <div class="login-page">
-          <div class="form">
-            <form id="bio-data">
-              <h2>Personal Details</h2>
-              <input name="fullName" type="text" value="firstname Lastname" readonly>
-              <input name="email" type="text" value="email@email.com" readonly>
-              <input name="phoneNumber" type="text" value="08007593000" readonly>
-              <textarea name="homeAddress" id="address" rows="3" placeholder="Home Address" required></textarea>
-              <button>continue (1 / 4)</button>
-            </form>
-            <form id="employment-details" class="closed">
-              <h2>Employment Details</h2>
-              <input type="text" name="company-name" id="company-name" placeholder="Company name" required>
-              <textarea name="company-address" id="company-address" rows="3" placeholder="Company Address" required></textarea>
-              <input type="text" name="employer-name" id="employer-name" placeholder="Name of Employer" pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$" required/>
-              <input type="email" name="employer-email" id="employer-email" placeholder="Email of Employer" required/>
-              <button>continue (2 / 4)</button>
-              <p class="message">*Note that your employment details will be verified</p>
-            </form>
-            <form id="bank-details" class="closed">
-              <h2>Bank Details</h2>  
-              <input name="bank-name" id="bank-name" type="text" pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$" placeholder="Bank">
-              <input name="account-number" id="account-number" type="text" pattern="[0-9]{10}" placeholder="Account Number">
-              <button>continue (3 / 4)</button>
-              <p class="message">*Account in which you would receive the loan</p>
-            </form>
-            <form id="loan-details" class="closed">
-              <h2>Loan Details</h2> 
-              <input type="number" name="loan-amount" id="loan-amount" min="10000" max="200000" placeholder="Loan Amount eg. 10000">
-              <input type="number" name="tenor" id="tenor" name="tenor" min="1" max="18" placeholder="Number of months eg 12">
-              <button>submit</button>
-            </form>
+      <div class="wrapper">
+        <div id="sidebar">
+          <ul>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./loanForm.html">apply</a></li>
+            <li><a href="./user-history.html">Loan History</a></li>
+            <li><a href="../index.html">Log Out</a></li>
+          </ul>
+        </div>
+
+        <div id="main">
+          <div class="container">
+            <div class="login-page">
+              <div class="form">
+                <form id="bio-data">
+                  <h2>Personal Details</h2>
+                  <input name="fullName" type="text" value="firstname Lastname" readonly />
+                  <input name="email" type="text" value="email@email.com" readonly />
+                  <input name="phoneNumber" type="text" value="08007593000" readonly />
+                  <textarea
+                    name="homeAddress"
+                    id="address"
+                    rows="3"
+                    placeholder="Home Address"
+                    required
+                  ></textarea>
+                  <button>continue (1 / 4)</button>
+                </form>
+                <form id="employment-details" class="closed">
+                  <h2>Employment Details</h2>
+                  <input
+                    type="text"
+                    name="company-name"
+                    id="company-name"
+                    placeholder="Company name"
+                    required
+                  />
+                  <textarea
+                    name="company-address"
+                    id="company-address"
+                    rows="3"
+                    placeholder="Company Address"
+                    required
+                  ></textarea>
+                  <input
+                    type="text"
+                    name="employer-name"
+                    id="employer-name"
+                    placeholder="Name of Employer"
+                    pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$"
+                    required
+                  />
+                  <input
+                    type="email"
+                    name="employer-email"
+                    id="employer-email"
+                    placeholder="Email of Employer"
+                    required
+                  />
+                  <button>continue (2 / 4)</button>
+                  <p class="message">*Note that your employment details will be verified</p>
+                </form>
+                <form id="bank-details" class="closed">
+                  <h2>Bank Details</h2>
+                  <input
+                    name="bank-name"
+                    id="bank-name"
+                    type="text"
+                    pattern="^[a-zA-Z]+(\s[a-zA-Z]+)*$"
+                    placeholder="Bank"
+                  />
+                  <input
+                    name="account-number"
+                    id="account-number"
+                    type="text"
+                    pattern="[0-9]{10}"
+                    placeholder="Account Number"
+                  />
+                  <button>continue (3 / 4)</button>
+                  <p class="message">*Account in which you would receive the loan</p>
+                </form>
+                <form id="loan-details" class="closed">
+                  <h2>Loan Details</h2>
+                  <input
+                    type="number"
+                    name="loan-amount"
+                    id="loan-amount"
+                    min="10000"
+                    max="200000"
+                    placeholder="Loan Amount eg. 10000"
+                  />
+                  <input
+                    type="number"
+                    name="tenor"
+                    id="tenor"
+                    name="tenor"
+                    min="1"
+                    max="18"
+                    placeholder="Number of months eg 12"
+                  />
+                  <button>submit</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -65,8 +133,7 @@
     <footer>
       <p>Ibukun Adeeko &copy; 2019</p>
     </footer>
-    
-    
+
     <script src="../js/main.js"></script>
     <script src="../js/loanForm.js"></script>
   </body>
