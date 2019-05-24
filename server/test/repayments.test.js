@@ -88,6 +88,15 @@ describe('POST /loans/:id/repayment', () => {
     res.body.data.should.have.property('amount');
     res.body.data.should.have.property('balance');
   });
+  it('should NOT make Payments if Paid Amount exceeds balance', async () => {
+    const id = 8;
+    const amount = 155043;
+    const res = await request.post(`/api/v1/loans/${id}/repayment`).send({ amount }).set('authorization', `${adminToken}`);
+    res.should.have.status(400);
+    res.body.should.be.a('object');
+    res.body.should.have.property('error');
+    res.body.should.have.property('status').eql(400);
+  });
   it('should make Payments and change repaid to true when Loan payment is complete', async () => {
     const id = 8;
     const amount = 155042;
