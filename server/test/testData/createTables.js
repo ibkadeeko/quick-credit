@@ -8,6 +8,7 @@ const createTables = `
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(128) NOT NULL,
     phone VARCHAR(11) NOT NULL UNIQUE,
+    address VARCHAR NOT NULL,
     status VARCHAR(10) NOT NULL CHECK(status IN ('verified', 'unverified')) DEFAULT 'unverified',
     isAdmin BOOLEAN NOT NULL DEFAULT false,
     registered TIMESTAMP NOT NULL DEFAULT NOW(),

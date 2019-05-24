@@ -44,6 +44,7 @@ class UserModel {
    * @param {string} params.email - Users email address
    * @param {string} params.password - Users Hashed Password
    * @param {number} params.phone - Users Phone Number
+   * @param {string} params.address - Users House Address
    * @param {string} params.status - Verified or Unverified
    * @param {boolean} params.isAdmin - Is the User an Admin?
    * @returns {Promise<object | boolean>} Newly created Users data
@@ -51,7 +52,7 @@ class UserModel {
   static async create(params) {
     try {
       const {
-        firstName, lastName, email, password, phone, status, isAdmin,
+        firstName, lastName, email, password, phone, address, status, isAdmin,
       } = params;
       const newUser = [
         firstName,
@@ -59,10 +60,11 @@ class UserModel {
         email,
         password,
         phone,
+        address,
         status,
         isAdmin,
       ];
-      const queryText = 'INSERT INTO users (firstname, lastname, email, password, phone, status, isAdmin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+      const queryText = 'INSERT INTO users (firstname, lastname, email, password, phone, address, status, isAdmin) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
       const { rows } = await db.query(queryText, newUser);
       if (rows) {
         return rows[0];
