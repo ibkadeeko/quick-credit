@@ -216,6 +216,14 @@ class Loans {
   static async getUserLoans(req, res) {
     const { email } = res.locals;
     const userLoanArray = await LoanModel.find(email);
+    if (!userLoanArray.length) {
+      return successRes(res, 200, userLoanArray);
+    }
+    if (userLoanArray.length > 0) {
+      const approvedLoans = userLoanArray.filter(loan => loan.status === 'approved');
+      const returnData = approvedLoans || [];
+      return successRes(res, 200, returnData);
+    }
     return successRes(res, 200, userLoanArray);
   }
 }
