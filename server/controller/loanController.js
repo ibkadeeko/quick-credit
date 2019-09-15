@@ -31,7 +31,9 @@ class Loans {
     const {
       firstName, lastName, email, amount, tenor,
     } = req.body;
-    if (res.locals.email !== email) { return errorRes(next, 400, 'email does not match users email'); }
+    if (res.locals.email !== email) {
+      return errorRes(next, 400, 'email does not match users email');
+    }
     const amountInt = parseInt(amount, 10);
     const tenorInt = parseInt(tenor, 10);
     const { paymentInstallment, interest, balance } = loanPayment(amountInt, tenorInt);
@@ -159,7 +161,13 @@ class Loans {
       return errorRes(next, 400, `Loan with ID: ${loanId} has been fully repaid`);
     }
     const currentBalance = Math.ceil(loanObject.balance);
-    if (paidAmount > currentBalance) { return errorRes(next, 400, `Paid Amount Exceeds Balance. Your current balance is ${currentBalance}`); }
+    if (paidAmount > currentBalance) {
+      return errorRes(
+        next,
+        400,
+        `Paid Amount Exceeds Balance. Your current balance is ${currentBalance}`,
+      );
+    }
     const {
       amount,
       paymentInstallment: monthlyInstallment,
@@ -198,6 +206,17 @@ class Loans {
       if (loanUserId !== userId) return errorRes(next, 401, 'You cannot view another users repayment history');
     }
     return successRes(res, 200, loanRepaymentsArray);
+  }
+
+  /**
+   * Returns the data of all loans owned by a single user
+   * @param {object} req - request
+   * @param {object} res - response
+   */
+  static async getUserLoans(req, res) {
+    const { email } = res.locals;
+    const userLoanArray = await LoanModel.find(email);
+    return successRes(res, 200, userLoanArray);
   }
 }
 
