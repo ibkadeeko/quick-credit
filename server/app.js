@@ -34,10 +34,8 @@ app.get('/', (req, res) => successRes(res, 200, { message: 'Welcome to Quick Cre
 
 app.all('*', (req, res, next) => errorRes(next, 404, 'The Route you are requesting for does not exist'));
 
-
 app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.status((err.status >= 100 && err.status < 600) ? err.status : 500);
+  res.status(err.status >= 100 && err.status < 600 ? err.status : 500);
   res.send({
     status: err.status ? err.status : 500,
     error: err.message,
